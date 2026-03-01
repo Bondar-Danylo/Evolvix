@@ -1,0 +1,11 @@
+.logo {
+    display: flex;
+    align-items: center;
+    &__text {
+        text-transform: uppercase;
+        color: var(--white_color);
+        font-weight: var(--bold_weight);
+        margin-left: 15px;
+        letter-spacing: 0.2rem;
+    }
+}

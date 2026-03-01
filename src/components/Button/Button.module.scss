@@ -1,0 +1,47 @@
+.button {
+    // Main Styles
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    color: var(--white_color);
+    border-radius: var(--normal_radius);
+    font-family: var(--second_font);
+    font-weight: var(--bold_weight);
+    letter-spacing: 0.2rem;
+    font-size: var(--normal_size);
+    transition: var(--normal_transition);
+    border: 2px solid transparent;
+
+
+    // Sizes
+    &.small {
+        width: 100px;
+        padding: 5px;
+    }
+    &.medium {
+        width: 200px;
+        padding: 10px;
+    }
+    &.large {
+        width: 300px;
+        padding: 15px;
+    }
+
+    // Colors
+    &.blue {
+        background-color: var(--dark-blue_color);
+    }
+    &.light {
+        background-color: var(--main_color);
+    }
+    &.red {
+        background-color: var(--red_color);
+    }
+
+    &:hover {
+        background-color: var(--second_color);
+        border: 2px solid var(--dark-blue_color);
+        color: var(--dark-blue_color);
+    }
+
+}

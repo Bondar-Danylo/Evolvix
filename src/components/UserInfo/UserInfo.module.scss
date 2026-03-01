@@ -1,0 +1,17 @@
+.user {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    &__info {
+        margin-left: 20px;
+        color: var(--white_color);
+    }
+    &__name {
+        font-weight: var(--medium_weight);
+        margin-bottom: 5px;
+    }
+    &__position {
+        color: var(--grey_color);
+        font-size: var(--tiny_size);
+    }
+}

@@ -1,0 +1,45 @@
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    &__item {
+        width: 22%;
+        min-width: 250px;
+        padding: 15px;
+        box-shadow: var(--normal_shadow);
+        border-radius: var(--normal_radius);
+    }
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+    &__icon {
+        margin-right: 10px;
+    }
+    &__title {
+        color: var(--dark-blue_color);
+        font-weight: var(--semibold_weight);
+    }
+    &__number {
+        font-size: var(--title_size);
+        font-weight: var(--bold_weight);
+        text-align: center;
+    }
+}
+
+
+.blue {
+    background-color: var(--second_color);
+}
+.yellow {
+    background-color: var(--yellow_color);
+}
+.green {
+    background-color: var(--green_color);
+}
+.red {
+    background-color: var(--red_color);
+}

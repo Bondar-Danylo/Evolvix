@@ -1,0 +1,41 @@
+// Main Styles
+.wrapper {
+    height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--light-bg_color);
+}
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.form {
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--white_color);
+    border-radius: var(--normal_radius);
+    box-shadow: var(--normal_shadow);
+    min-width: 400px;
+    min-height: 500px;
+}
+.buttons {
+    display: flex;
+    flex-direction: column;
+    &__reset {
+        border: none;
+        background-color: transparent;
+        margin-top: 15px;
+        cursor: pointer;
+        color: var(--graphite_color);
+        font-size: var(--tiny_size);
+        font-family: var(--main_font);
+        font-weight: var(--medium_weight);
+    }
+}

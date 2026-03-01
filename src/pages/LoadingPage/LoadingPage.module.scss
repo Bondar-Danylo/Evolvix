@@ -1,0 +1,66 @@
+// Main Styles
+.wrapper {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--light-bg_color);
+    justify-content: center;
+    align-items: center;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.logo {
+    width: 300px;
+    animation: logoReveal 1.2s steps(1) forwards;
+    clip-path: inset(0 100% 0 0);
+    overflow: hidden;
+}
+.text {
+    margin-top: 30px;
+    font-size: var(--huge_size);
+    letter-spacing: 1rem;
+    text-transform: uppercase;
+    color: var(--dark-blue_color);
+    font-weight: var(--black_weight);
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid var(--dark-blue_color);
+    width: 0;
+    animation: typing 1.5s steps(7) 1.2s forwards, blink 0.7s infinite;
+}
+
+
+// Animation
+@keyframes logoReveal {
+    0% {
+        clip-path: inset(0 100% 0 0);
+    }
+    33% {
+        clip-path: inset(0 70% 0 0);
+    }
+    66% {
+        clip-path: inset(0 35% 0 0);
+    }
+    100% {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 10ch;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}

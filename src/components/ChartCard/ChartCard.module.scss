@@ -1,0 +1,39 @@
+.card {
+    width: 49%;
+    border-radius: var(--normal_radius);
+    box-shadow: var(--normal_shadow);
+    min-width: 400px;
+    &__header {
+        background-color: var(--second_color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        border-top-left-radius: var(--normal_radius);
+        border-top-right-radius: var(--normal_radius);
+        font-weight: var(--semibold_weight);
+        font-size: var(--subtitle_size);
+        color: var(--dark-blue_color);
+    }
+    &__select {
+        border: none;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 10px;
+        color: var(--white_color);
+        background-color: var(--dark-blue_color);
+        font-weight: var(--medium_weight);
+        &:focus {
+            outline: none;
+            border: none;
+        }
+        & option {
+            color: var(--black_color);
+            background-color: var(--second_color);
+        }
+    }
+    &__body {
+        padding: 15px;
+        
+    }
+}

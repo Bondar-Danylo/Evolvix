@@ -1,0 +1,30 @@
+.menu {
+    margin-top: 20px;
+    &__item {
+        transition: all ease 0.2s;
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
+        &:hover {
+            background-color: var(--main_color);
+        }
+    }
+    &__link {
+        padding: 10px 30px;
+        display: flex;
+        align-items: center;
+        color: var(--grey_color);
+        font-weight: var(--medium_weight);
+    }
+    &__icon {
+        margin-right: 10px;
+        color: var(--grey_color);
+    }
+}
+.active {
+   background-color: var(--main_color);
+   color: var(--white_color);
+   & .menu__icon {
+    color: var(--white_color);
+   }
+}

@@ -1,0 +1,14 @@
+.logo {
+    text-align: center;
+    &__icon {
+        width: 100px;
+    }
+    &__text {
+        font-size: var(--subtitle_size);
+        font-weight: var(--bold_weight);
+        color: var(--dark-blue_color);
+        letter-spacing: 0.3rem;
+        text-transform: uppercase;
+        margin-top: 15px;
+    }
+}

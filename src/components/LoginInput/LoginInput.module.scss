@@ -1,0 +1,33 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+}
+.icon {
+    padding: 10px;
+    background-color: var(--main_color);
+    border-radius: var(--tiny_raius);
+    margin-right: 20px;
+    & img {
+        width: 25px;
+    }
+}
+.input{
+    border: none;
+    font-weight: var(--bold_weight);
+    padding: 10px 0;
+    color: var(--graphite_color);
+    font-size: var(--normal_size);
+    border-bottom: 2px solid var(--graphite_color);
+    max-width: 200px;
+    &:focus {
+        outline: none;
+    }
+    &.error {
+        border-bottom: 2px solid red;
+    }
+}
+.error {
+  color:red;
+  font-weight: var(--medium_weight);
+  display: block;
+}
