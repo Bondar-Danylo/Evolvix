@@ -5,6 +5,7 @@ import Menu from "@/components/Menu/Menu";
 import UserInfo from "@/components/UserInfo/UserInfo";
 import Header from "@/components/Header/Header";
 import ThemeToggler from "@/components/ThemeToggler/ThemeToggler";
+import PageTitle from "@/components/PageTitle/PageTitle";
 
 const DashboardLayout = () => {
   return (
@@ -22,6 +23,7 @@ const DashboardLayout = () => {
       <div className={styles.content}>
         <Header />
         <main className={styles.main}>
+          <PageTitle>The Park Tower Knightsbridge</PageTitle>
           <Outlet />
         </main>
       </div>

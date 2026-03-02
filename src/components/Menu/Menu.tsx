@@ -18,7 +18,7 @@ const Menu = ({ role }: IRole) => {
     {
       image: listIcon,
       text: "Employee List",
-      path: "/employee",
+      path: "/employee-list",
     },
     {
       image: trainingsIcon,

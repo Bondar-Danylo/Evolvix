@@ -1,4 +1,3 @@
-import PageTitle from "@/components/PageTitle/PageTitle";
 import styles from "./HomePage.module.scss";
 import StatsCards from "@/components/StatsCards/StatsCards";
 import ChartCard from "@/components/ChartCard/ChartCard";
@@ -47,7 +46,6 @@ const HomePage = () => {
 
   return (
     <div className={styles.wrapper}>
-      <PageTitle>The Park Tower Knightsbridge</PageTitle>
       <StatsCards />
       <div className={styles.main}>
         <ChartCard data={onboardingData} type="line">

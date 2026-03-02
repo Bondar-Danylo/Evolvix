@@ -3,6 +3,7 @@
     border-radius: var(--normal_radius);
     box-shadow: var(--normal_shadow);
     min-width: 400px;
+    background-color: var(--white_color);
     &__header {
         background-color: var(--second_color);
         display: flex;
