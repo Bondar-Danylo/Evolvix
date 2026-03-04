@@ -7,11 +7,17 @@ const Button = ({
   type,
   color = "blue",
   size = "medium",
+  textSize = "upper",
   children,
 }: ButtonProps): JSX.Element => {
   return (
     <button
-      className={cn(styles.button, styles[size], styles[color])}
+      className={cn(
+        styles.button,
+        styles[size],
+        styles[color],
+        styles[textSize],
+      )}
       type={type ?? "button"}
     >
       {children}

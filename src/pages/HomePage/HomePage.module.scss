@@ -9,3 +9,13 @@
     justify-content: space-between;
     flex-wrap: wrap;
 }
+
+// Media Queries 
+@media screen and (max-width: 768px) {
+    .wrapper {
+        padding: 0 20px;
+    }
+    .main {
+        margin: 20px 0 0 0;
+    }
+}

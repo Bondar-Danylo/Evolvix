@@ -1,0 +1,34 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead {
+    background-color: var(--grey_color);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    th {
+      padding: 15px 20px;
+      text-align: left;
+      color: var(--dark-graphite_color);
+      font-weight: var(--medium_weight);
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid var(--grey_color);
+      transition: background-color 0.2s;
+
+      &:hover, &.focusedRow {
+        background-color: var(--second_color);
+      }
+
+      td {
+        padding: 12px 20px;
+        color: var(--dark-graphite_color);
+        vertical-align: middle;
+      }
+    }
+  }
+}

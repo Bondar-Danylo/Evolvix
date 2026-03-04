@@ -9,3 +9,25 @@
         letter-spacing: 0.2rem;
     }
 }
+.menu {
+    display: none;
+    transition: var(--normal_transition);
+    transform: rotate(90deg);
+}
+.rotate {
+    transform: rotate(-90deg) !important;
+}
+
+// Media Queries
+@media screen and (max-width: 1024px) {
+    .logo__icon {
+        display: none;
+    }
+    .menu {
+        display: block;
+        color: var(--white_color);
+        &:hover {
+            color: var(--main_color);
+        }
+    }
+}

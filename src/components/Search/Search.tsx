@@ -1,13 +1,8 @@
-import { useState } from "react";
+import type { SearchProps } from "./ISearchProps.types";
 import styles from "./Search.module.scss";
 import SearchIcon from "@/assets/search_icon.svg?react";
 
-const Search = () => {
-  const [value, setValue] = useState<string>("");
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setValue(e.target.value);
-  };
-
+const Search = ({ value, onChange }: SearchProps) => {
   return (
     <div className={styles.search}>
       <label htmlFor="search" className={styles.search__label}>
@@ -16,14 +11,13 @@ const Search = () => {
       <input
         type="text"
         id="search"
-        name="search"
         className={styles.search__input}
         placeholder="Search..."
         value={value}
-        onChange={handleChange}
+        onChange={(e) => onChange(e.target.value)}
         autoComplete="off"
       />
-      <SearchIcon className={styles.search__icon} aria-hidden="true" />
+      <SearchIcon className={styles.search__icon} />
     </div>
   );
 };

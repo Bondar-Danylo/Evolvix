@@ -64,3 +64,21 @@
     border-color: transparent;
   }
 }
+
+// Media Queries
+@media screen and (max-width: 425px) {
+    .logo {
+        width: 220px;
+    }
+    .text {
+        font-size: var(--title_size);
+    }
+    @keyframes typing {
+        from {
+            width: 0;
+        }
+        to {
+            width: 13ch;
+        }
+    }
+}

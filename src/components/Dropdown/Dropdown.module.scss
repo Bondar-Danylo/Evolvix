@@ -8,6 +8,12 @@
     font-weight: var(--medium_weight);
     color: var(--graphite_color);
     box-shadow: var(--normal_shadow);
+    position: relative;
+
+    &:has(.active) {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
 
     &:focus-within &__top {
         color: var(--main_color);
@@ -36,29 +42,58 @@
         }
     }
     &__body {
+        z-index: 10;
         border-top: 1px solid var(--graphite_color);
         display: none;
+        position: absolute;
+        width: 100%;
+        background-color: var(--white_color);
+        border-bottom-left-radius: var(--normal_radius);
+        border-bottom-right-radius: var(--normal_radius);
+        box-shadow: var(--normal_shadow);
+    }
+    &__list {
+        border-bottom: 1px solid var(--graphite_color);
     }
     &__item {
         padding: 10px 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        &:hover {
+        color: var(--grey_color);
+        &:hover, &.isFocused {
             background-color: var(--second_color);
+            color: var(--graphite_color);
             & .dropdown__delete {
                 color: var(--dark-red_color);
-            }
-        }
-        &:last-child {
-            &:hover {
-                border-bottom-left-radius: var(--normal_radius);
-                border-bottom-right-radius: var(--normal_radius);
             }
         }
     }
     &__delete {
         color: var(--grey_color);
+    }
+    &__add {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-bottom-left-radius: var(--normal_radius);
+        border-bottom-right-radius: var(--normal_radius);
+        cursor: pointer;
+        padding: 10px 0;
+        background-color: var(--second_color);
+        font-weight: var(--medium_weight);
+        font-size: var(--normal_size);
+        color: var(--main_color);
+        transition: var(--normal_transition);
+        &:hover {
+            background-color: var(--main_color);
+            color: var(--white_color);
+        }
+    }
+    &__icon {
+        margin-right: 10px;
     }
 }
 

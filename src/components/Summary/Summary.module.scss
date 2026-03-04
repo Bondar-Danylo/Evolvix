@@ -62,3 +62,57 @@
         margin-left: 10px;
     }
 }
+.target {
+    display: flex;
+    align-items: center;
+}
+
+// Media Queries 
+@media screen and (max-width: 1200px) {
+    .summary {
+        padding-bottom: 0;
+        &__bottom {
+            & > button {
+                margin: 20px auto; 
+            }
+        }
+        &__analytic {
+            text-align: center;
+        }
+    }
+    .wrapper {
+        width: 100%;
+    }
+    .progress {
+        width: 100%;
+        justify-content: space-between;
+        &__bar {
+            flex-grow: 1;
+        }
+    }
+}
+@media screen and (max-width: 768px) {
+    .summary {
+        margin-bottom: 20px;
+        &__bottom {
+            margin-top: 0;
+        }
+    }
+    .list {
+        display: none;
+    }
+    .progress {
+        flex-direction: column;
+        &__bar {
+            margin-top: 10px;
+            margin-right: 0;
+            width: 100%;
+            order: 2;
+            margin-bottom: 10px;
+            height: 8px;
+            &::after {
+                height: 8px;
+            }
+        }
+    }
+}

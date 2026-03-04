@@ -1,8 +1,8 @@
 import styles from "./Header.module.scss";
 import { useLocation } from "react-router-dom";
 import { type Location } from "react-router-dom";
-import notificationIcon from "@/assets/notification_icon.svg";
-import logoutIcon from "@/assets/logout_icon.svg";
+import NotificationIcon from "@/assets/notification_icon.svg?react";
+import LogoutIcon from "@/assets/logout_icon.svg?react";
 
 const Header = () => {
   const location: Location = useLocation();
@@ -16,18 +16,10 @@ const Header = () => {
       <span className={styles.breadcrums}>{capitalized}</span>
       <div className={styles.wrapper}>
         <div className={styles.notification}>
-          <img
-            src={notificationIcon}
-            alt="Notification Bell Icon"
-            className={styles.notification__icon}
-          />
+          <NotificationIcon className={styles.notification__icon} />
           <span className={styles.notification__count}>3</span>
         </div>
-        <img
-          src={logoutIcon}
-          alt="Logout arrow icon"
-          className={styles.logout}
-        />
+        <LogoutIcon className={styles.logout} />
       </div>
     </header>
   );

@@ -4,3 +4,10 @@
     color: var(--dark-blue_color);
     padding: 30px 30px 0 30px;
 }
+
+// Media Queries
+@media screen and (max-width: 768px) {
+    .title {
+        font-size: var(--title_size);
+    }
+}

@@ -15,6 +15,8 @@
 .wrapper {
     display: flex;
     align-items: center;
+    z-index: 10;
+    position: relative;
 }
 .notification {
     position: relative;
@@ -38,6 +40,19 @@
     }
 }
 .logout {
-    width: 30px;
     cursor: pointer;
+}
+
+// Media Queries
+@media screen and (max-width: 1024px) {
+    .header {
+        background-color: var(--dark-graphite_color);
+        z-index: 10;
+    }
+    .notification__icon {
+        color: var(--white_color);
+    }
+    .logout {
+        color: var(--white_color);
+    }
 }

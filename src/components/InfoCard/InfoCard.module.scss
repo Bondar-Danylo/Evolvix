@@ -60,3 +60,22 @@
         font-weight: var(--semibold_weight);
     }
 }
+
+// Media Queries
+@media screen and (max-width:1200px) {
+    .card {
+        min-width: unset;
+    }
+}
+@media screen and (max-width: 768px) {
+    .card {
+        width: 100%;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+}
+@media screen and (max-width: 575px) {
+    .card__header {
+        font-size: var(--normal_size);
+    }
+}

@@ -43,3 +43,28 @@
 .red {
     background-color: var(--red_color);
 }
+
+// Media Queries 
+@media screen and (max-width: 1300px) {
+    .stats {
+        justify-content: center;
+        &__item {
+            margin: 10px;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .stats {
+        margin-top: 10px;
+        &__item {
+            width: 45%;
+        }
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .stats__item {
+        width: 100%;
+    }
+}

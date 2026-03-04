@@ -1,0 +1,27 @@
+.actions {
+  display: flex;
+  gap: 8px;
+  
+  .actionBtn {
+    background: none;
+    border: 1px solid var(--grey_color);
+    border-radius: 4px;
+    padding: 4px;
+    cursor: pointer;
+    filter: grayscale(1);
+    opacity: 0.5;
+    transition: all 0.2s;
+
+    &:hover {
+      filter: grayscale(0);
+      opacity: 1;
+      border-color: var(--main_color);
+    }
+  }
+}
+
+:global(.focusedRow) .actionBtn,
+tr:hover .actionBtn {
+  filter: grayscale(0);
+  opacity: 1;
+}

@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.background {
+  fill: none;
+  stroke: var(--grey_color);
+  opacity: 0.3;
+}
+
+.progress {
+  fill: none;
+  stroke: var(--main_color);
+  transition: stroke-dashoffset 0.5s ease;
+}

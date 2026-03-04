@@ -39,3 +39,21 @@
         font-weight: var(--medium_weight);
     }
 }
+
+// Media Queries
+@media screen and (max-width: 575px) {
+    .form {
+        min-width: 250px;
+        width: 300px;
+        min-height: 450px;
+    }
+    .buttons {
+        & > *:first-child {
+            width: 200px !important;
+            padding: 10px !important;
+        }
+        & > *:last-child {
+            margin-top: 10px;
+        }
+    }
+}

@@ -5,10 +5,9 @@ import listIcon from "@/assets/list_icon.svg?react";
 import trainingsIcon from "@/assets/trainings_icon.svg?react";
 import topicsIcon from "@/assets/topics_icon.svg?react";
 import profileIcon from "@/assets/profile_icon.svg?react";
-import type { IMenu } from "./IMenu.types";
-import type { IRole } from "./IRole.types";
+import type { IMenu, IMenuProps } from "./IMenu.types";
 
-const Menu = ({ role }: IRole) => {
+const Menu = ({ role, onClickHandler }: IMenuProps) => {
   const adminMenu: IMenu[] = [
     {
       image: dashboardIcon,
@@ -56,7 +55,11 @@ const Menu = ({ role }: IRole) => {
     <ul className={styles.menu}>
       {menu.map((item: IMenu) => {
         return (
-          <li key={item.path} className={styles.menu__item}>
+          <li
+            key={item.path}
+            className={styles.menu__item}
+            onClick={onClickHandler}
+          >
             <NavLink
               end
               className={({ isActive }) =>

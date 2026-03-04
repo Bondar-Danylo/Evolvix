@@ -1,4 +1,6 @@
 export interface IDropdown {
-    options: string[],
-    editable: boolean
+  options: string[];
+  value: string; 
+  onChange: (value: string) => void; 
+  editable?: boolean;
 }
