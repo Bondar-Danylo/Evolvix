@@ -1,0 +1,202 @@
+.wrapper {
+    padding: 30px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 70px;
+    align-items: center;
+}
+.user {
+    background-color: var(--white_color);
+    width: 450px;
+    padding: 25px;
+    border-radius: var(--normal_radius);
+    box-shadow: var(--normal_shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.photo {
+    position: relative;
+    width: fit-content;
+    &__image {
+        width: 100px;
+        margin-left: 20px;
+        border-radius: 100%;
+        border: 2px solid var(--dark-blue_color);
+    }
+    &__upload {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        width: 140px;
+        background-color: var(--white_color);
+        border: 1px solid var(--graphite_color);
+        padding: 5px 10px;
+        border-radius: var(--small_radius);
+        cursor: pointer;
+        text-align: center;
+        color: var(--graphite_color);
+        transition: var(--normal_transition);
+        & span {
+            font-size: var(--tiny_size);
+            font-weight: var(--bold_weight);
+            margin-left: 10px;
+        }
+        &:hover, &:focus {
+            outline: none;
+            color: var(--main_color);
+            border: 1px solid var(--main_color);
+        }
+    }
+}
+
+.info {
+    &__name {
+        font-size: var(--subtitle_size);
+        font-weight: var(--bold_weight);
+    }
+    &__position {
+        font-weight: var(--medium_weight);
+    }
+    &__started {
+        color: var(--grey_color);
+    }
+    &__status {
+        display: flex;
+        align-items: center;
+        & span {
+            margin-left: 10px;
+            color: var(--dark-green_color);
+            font-weight: var(--medium_weight);
+        }
+        & img {
+            width: 20px;
+        }
+    }
+    &__item {
+        &:not(:last-child) {
+            margin-bottom: 15px;
+        }
+    }
+}
+.contacts {
+    width: 500px;
+    margin: 20px 0;
+    & > *:not(:last-child) {
+        margin-bottom: 10px;
+    }   
+}
+
+.summary {
+    width: 100%;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: var(--white_color);
+    box-shadow: var(--normal_shadow);
+    border-radius: var(--normal_radius);
+    &__title {
+        font-size: var(--subtitle_size);
+        font-weight: var(--bold_weight);
+        margin-bottom: 15px;
+    }
+    &__progress {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        font-weight: var(--medium_weight);
+        border-bottom: 2px solid var(--grey_color);
+        padding-bottom: 10px;
+        & span {
+            margin-right: 20px;
+            width: fit-content;
+        }
+    }
+    &__bar {
+        flex: 1;
+        height: 8px;
+        background-color: var(--grey_color);
+        border-radius: var(--normal_radius);
+        position: relative;
+        &::after {
+            position: absolute;
+            content: '';
+            height: 8px;
+            width: 83%;
+            left: 0;
+            background-color: var(--dark-green_color);
+            border-radius: var(--normal_radius);
+        }
+    }
+    &__footer {
+        margin-top: 15px;
+        font-weight: var(--medium_weight);
+    }
+}
+.numbers {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    &__item {
+        font-size: var(--title_size);
+        & span {
+            color: var(--main_color);
+            font-weight: var(--medium_weight);
+        }
+    }
+}
+
+// Media Queries
+@media screen and (max-width: 768px) {
+    .wrapper {
+        margin-bottom: 0;
+    }
+    .summary {
+        margin-top: 0;
+        &__footer {
+            text-align: center;
+        }
+    }
+    .numbers {
+        display: none;
+    }
+}
+@media screen and (max-width: 575px) {
+    .user {
+        flex-direction: column;
+        padding: 10px;  
+    }
+    .user, .contacts {
+        width: 100%;
+    }
+    .photo {
+        margin-bottom: 10px;
+        margin-right: 20px;
+    }
+    .info {
+        text-align: center;
+    }
+    .summary {
+        text-align: center;
+    }
+    .summary__progress span {
+        display: none;
+    }
+}
+@media screen and (max-width: 425px) {
+    input {
+        width: 70%;
+    }
+    .summary {
+        &__title {
+            font-size: var(--normal_size);
+        }
+        &__footer {
+            font-size: var(--tiny_size);
+        }
+    }
+}

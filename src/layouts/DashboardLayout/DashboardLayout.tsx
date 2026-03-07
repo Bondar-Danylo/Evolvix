@@ -4,10 +4,10 @@ import Header from "@/components/Header/Header";
 import PageTitle from "@/components/PageTitle/PageTitle";
 import Aside from "@/components/Aside/Aside";
 
-const DashboardLayout = () => {
+const DashboardLayout = ({ role }: any) => {
   return (
     <div className={styles.wrapper}>
-      <Aside />
+      <Aside role={role} />
       <div className={styles.content}>
         <Header />
         <main className={styles.main}>

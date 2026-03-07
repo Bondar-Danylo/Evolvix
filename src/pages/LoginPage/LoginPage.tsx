@@ -5,10 +5,10 @@ import padlockIcon from "@/assets/padlock.svg";
 import LoginInput from "@/components/LoginInput/LoginInput";
 import VerticalLogo from "@/components/VerticalLogo/VerticalLogo";
 import Button from "@/components/Button/Button";
-import type { ILoginPage } from "./ILoginPage.types";
+import type { ILoginPage, ILoginPageProps } from "./ILoginPage.types";
 import { useNavigate, type NavigateFunction } from "react-router-dom";
 
-const LoginPage = () => {
+const LoginPage = ({ role, setRole }: ILoginPageProps) => {
   const navigate: NavigateFunction = useNavigate();
 
   const {
@@ -19,7 +19,8 @@ const LoginPage = () => {
 
   const onSubmit = (data: ILoginPage) => {
     console.log(data);
-    navigate("/dashboard");
+    setRole("user");
+    role === "admin" ? navigate("/dashboard") : navigate("/topics");
   };
 
   return (

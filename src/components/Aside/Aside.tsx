@@ -5,7 +5,7 @@ import UserInfo from "@/components/UserInfo/UserInfo";
 import HorizontalLogo from "@/components/HorizontalLogo/HorizontalLogo";
 import { useState } from "react";
 
-const Aside = () => {
+const Aside = ({ role }: any) => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
   const toggleMenu = (e: React.MouseEvent<HTMLElement>): void => {
@@ -25,7 +25,7 @@ const Aside = () => {
         <nav className={styles.navigation}>
           <UserInfo />
           <Menu
-            role="admin"
+            role={role}
             onClickHandler={(e: React.MouseEvent<HTMLElement>) => toggleMenu(e)}
           />
         </nav>

@@ -31,6 +31,7 @@
     &__reset {
         border: none;
         background-color: transparent;
+        margin: 0 auto;
         margin-top: 15px;
         cursor: pointer;
         color: var(--graphite_color);
@@ -53,7 +54,7 @@
             padding: 10px !important;
         }
         & > *:last-child {
-            margin-top: 10px;
+            margin: 0 auto;
         }
     }
 }
