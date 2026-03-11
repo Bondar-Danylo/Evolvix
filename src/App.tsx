@@ -12,42 +12,67 @@ import EmployeeTrainingsPage from "./pages/EmployeeTrainingsPage/EmployeeTrainin
 import EmployeeTopicsPage from "./pages/EmployeeTopicsPage/EmployeeTopicsPage";
 
 function App() {
-  const [role, setRole] = useState<"admin" | "user">("user");
+  const [role, setRole] = useState<"admin" | "user">(() => {
+    return (localStorage.getItem("userRole") as "admin" | "user") || "user";
+  });
+
+  const isAuth = localStorage.getItem("isAuth") === "true";
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<LoadingPage />} />
+        <Route
+          index
+          element={
+            isAuth ? (
+              <Navigate to={role === "admin" ? "/dashboard" : "/trainings"} />
+            ) : (
+              <LoadingPage />
+            )
+          }
+        />
+
         <Route
           path="/login"
           element={<LoginPage role={role} setRole={setRole} />}
         />
+        {isAuth ? (
+          <Route element={<DashboardLayout role={role} />}>
+            <Route
+              path="/profile"
+              element={<ProfilePageLayout role={role} />}
+            />
 
-        <Route element={<DashboardLayout role={role} />}>
-          <Route path="/profile" element={<ProfilePageLayout role={role} />} />
-          {role === "admin" ? (
-            <>
-              <Route index path="/dashboard" element={<HomePage />} />
-              <Route path="/employee-list" element={<EmployeeListPage />} />
-              <Route path="/trainings" element={<TrainingPage />} />
-              <Route path="/topics" element={<TopicsPage />} />
-            </>
-          ) : (
-            <>
-              <Route
-                index
-                path="/trainings"
-                element={<EmployeeTrainingsPage />}
-              />
-              <Route path="/topics" element={<EmployeeTopicsPage />} />
-            </>
-          )}
-        </Route>
+            {role === "admin" ? (
+              <>
+                <Route path="/dashboard" element={<HomePage />} />
+                <Route path="/employee-list" element={<EmployeeListPage />} />
+                <Route path="/trainings" element={<TrainingPage />} />
+                <Route path="/topics" element={<TopicsPage />} />
+              </>
+            ) : (
+              <>
+                <Route path="/trainings" element={<EmployeeTrainingsPage />} />
+                <Route path="/topics" element={<EmployeeTopicsPage />} />
+              </>
+            )}
+          </Route>
+        ) : (
+          <Route path="*" element={<Navigate to="/login" />} />
+        )}
 
         <Route
           path="*"
           element={
-            <Navigate to={role === "admin" ? "/dashboard" : "/trainings"} />
+            <Navigate
+              to={
+                isAuth
+                  ? role === "admin"
+                    ? "/dashboard"
+                    : "/trainings"
+                  : "/login"
+              }
+            />
           }
         />
       </Routes>
