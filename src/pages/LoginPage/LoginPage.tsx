@@ -19,7 +19,7 @@ const LoginPage = ({ role, setRole }: ILoginPageProps) => {
 
   const onSubmit = (data: ILoginPage) => {
     console.log(data);
-    setRole("user");
+    setRole("admin");
     role === "admin" ? navigate("/dashboard") : navigate("/topics");
   };
 

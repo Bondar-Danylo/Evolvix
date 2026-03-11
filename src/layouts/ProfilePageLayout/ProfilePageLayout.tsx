@@ -7,33 +7,16 @@ import ContactInput from "@/components/ContactInput/ContactInput";
 import adIcon from "@/assets/ad_icon.svg";
 import phoneIcon from "@/assets/phone_icon.svg";
 import padlockIcon from "@/assets/padlock_icon.svg";
-import type { IInfoCardData } from "@/components/InfoCard/IInfoCardProps.types";
-import InfoCard from "@/components/InfoCard/InfoCard";
+import type { IRole } from "@/components/Menu/IRole.types";
+import EmployeeProfilePage from "@/pages/EmployeeProfilePage/EmployeeProfilePage";
+import ProfilePage from "@/pages/ProfilePage/ProfilePage";
 
-const ProfilePageLayout = () => {
+const ProfilePageLayout = ({ role }: IRole) => {
   const data = {
     email: "kateryna@hotel.marriott",
     phone: "07312606268",
     password: "111111111",
   };
-
-  const continueData: IInfoCardData[] = [
-    { id: 1, title: "Fire Safety" },
-    { id: 2, title: "Brand Standards" },
-    { id: 3, title: "Inventory Process" },
-  ];
-
-  const incompleteData: IInfoCardData[] = [
-    {
-      id: 1,
-      title: "Fire Safety",
-    },
-    { id: 2, title: "Brand Standards" },
-    {
-      id: 3,
-      title: "Inventory Process",
-    },
-  ];
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -114,36 +97,7 @@ const ProfilePageLayout = () => {
         />
       </div>
 
-      <InfoCard data={continueData}>Continue Learning</InfoCard>
-      <InfoCard data={incompleteData}>Incomplete Trainings </InfoCard>
-
-      <div className={styles.summary}>
-        <h2 className={styles.summary__title}>My Onboarding Progress</h2>
-        <div className={styles.summary__progress}>
-          <span>83% Complete</span>
-          <div className={styles.summary__bar}></div>
-        </div>
-        <ul className={styles.numbers}>
-          <li className={styles.numbers__item}>
-            <h2>
-              <span>10/12 </span>Trainings
-            </h2>
-          </li>
-          <li className={styles.numbers__item}>
-            <h2>
-              <span>7/8 </span>Quizzes
-            </h2>
-          </li>
-          <li className={styles.numbers__item}>
-            <h2>
-              <span>82% </span>Average Score
-            </h2>
-          </li>
-        </ul>
-        <div className={styles.summary__footer}>
-          ✨ You’re 2 trainings away from completion
-        </div>
-      </div>
+      {role === "user" ? <EmployeeProfilePage /> : <ProfilePage />}
     </div>
   );
 };

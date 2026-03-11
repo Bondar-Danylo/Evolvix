@@ -18,6 +18,7 @@ export const TablePageLayout = <
   addButtonText,
   // onAddClick,
   onRowClick,
+  editable,
 }: TablePageLayoutProps<T>) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
@@ -53,16 +54,20 @@ export const TablePageLayout = <
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <Search value={searchQuery} onChange={setSearchQuery} />
-        <Dropdown
-          options={dropdownOptions}
-          editable
-          value={selectedCategory}
-          onChange={setSelectedCategory}
-        />
-        <Button type="button" size="medium" color="light">
-          {addButtonText}
-        </Button>
+        <div className={styles.header__nav}>
+          <Search value={searchQuery} onChange={setSearchQuery} />
+          <Dropdown
+            options={dropdownOptions}
+            editable={editable}
+            value={selectedCategory}
+            onChange={setSelectedCategory}
+          />
+        </div>
+        {editable ?? (
+          <Button type="button" size="medium" color="light">
+            {addButtonText}
+          </Button>
+        )}
       </div>
 
       <div className={styles.tableContainer}>

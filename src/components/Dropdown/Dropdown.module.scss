@@ -52,9 +52,6 @@
         border-bottom-right-radius: var(--normal_radius);
         box-shadow: var(--normal_shadow);
     }
-    &__list {
-        border-bottom: 1px solid var(--graphite_color);
-    }
     &__item {
         padding: 10px 20px;
         display: flex;

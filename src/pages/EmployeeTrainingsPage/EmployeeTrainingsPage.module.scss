@@ -1,0 +1,23 @@
+.pageContainer {
+    td {
+        font-weight: var(--medium_weight);
+    }
+    & *> td > span {
+        color: var(--main_color);
+        font-weight: var(--medium_weight);
+    }
+    & > div > div > div {
+        margin-left: unset !important
+    }
+}
+.statusCheck {
+    & img {
+        width: 25px;
+        margin-left: 3px;
+    }
+}
+.statusCross {
+    & img {
+        width: 30px;
+    }
+}

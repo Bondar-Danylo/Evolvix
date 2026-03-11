@@ -8,4 +8,5 @@ export interface TablePageLayoutProps<T> {
   addButtonText: string;
   onAddClick?: () => void;
   onRowClick?: (item: T) => void;
+  editable?: boolean;
 }

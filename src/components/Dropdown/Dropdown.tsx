@@ -77,9 +77,7 @@ const Dropdown = ({
       onBlur={() => setIsOpen(false)}
     >
       <div className={styles.dropdown__top} onClick={toggleDropdown}>
-        <span className={styles.dropdown__selected}>
-          {value || "All Departments"}
-        </span>
+        <span className={styles.dropdown__selected}>{value || "All"}</span>
         <ChevronIcon
           className={`${styles.dropdown__arrow} ${isOpen ? styles.rotated : ""}`}
         />
@@ -94,7 +92,7 @@ const Dropdown = ({
             onClick={() => selectItem("")}
             onMouseEnter={() => setFocusedIndex(0)}
           >
-            <span className={styles.dropdown__option}>All Departments</span>
+            <span className={styles.dropdown__option}>All</span>
           </li>
 
           {options.map((item, index) => {
@@ -122,10 +120,12 @@ const Dropdown = ({
             );
           })}
         </ul>
-        <button className={styles.dropdown__add}>
-          <PlusIcon className={styles.dropdown__icon} />
-          Add
-        </button>
+        {editable ?? (
+          <button className={styles.dropdown__add}>
+            <PlusIcon className={styles.dropdown__icon} />
+            Add
+          </button>
+        )}
       </div>
     </div>
   );

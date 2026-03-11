@@ -28,6 +28,10 @@
         padding: 12px 20px;
         color: var(--dark-graphite_color);
         vertical-align: middle;
+        max-width: 150px;        
+        white-space: nowrap;    
+        overflow: hidden;        
+        text-overflow: ellipsis; 
       }
     }
   }

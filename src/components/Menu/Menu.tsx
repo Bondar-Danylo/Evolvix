@@ -10,6 +10,11 @@ import type { IMenu, IMenuProps } from "./IMenu.types";
 const Menu = ({ role, onClickHandler }: IMenuProps) => {
   const adminMenu: IMenu[] = [
     {
+      image: profileIcon,
+      text: "Profile",
+      path: "/profile",
+    },
+    {
       image: dashboardIcon,
       text: "Dashboard",
       path: "/dashboard",

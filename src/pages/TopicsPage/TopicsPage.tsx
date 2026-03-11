@@ -73,7 +73,7 @@ const TopicsPage = () => {
       columns={columns}
       searchKeys={SEARCH_KEYS}
       dropdownOptions={DROPDOWN_OPTIONS}
-      addButtonText="Add Training"
+      addButtonText="Add Topics"
       onAddClick={() => console.log("Add training modal")}
     />
   );

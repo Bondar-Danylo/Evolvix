@@ -8,6 +8,8 @@ import TrainingPage from "./pages/TrainingsPage/TrainingsPage";
 import TopicsPage from "./pages/TopicsPage/TopicsPage";
 import { useState } from "react";
 import ProfilePageLayout from "./layouts/ProfilePageLayout/ProfilePageLayout";
+import EmployeeTrainingsPage from "./pages/EmployeeTrainingsPage/EmployeeTrainingsPage";
+import EmployeeTopicsPage from "./pages/EmployeeTopicsPage/EmployeeTopicsPage";
 
 function App() {
   const [role, setRole] = useState<"admin" | "user">("user");
@@ -22,6 +24,7 @@ function App() {
         />
 
         <Route element={<DashboardLayout role={role} />}>
+          <Route path="/profile" element={<ProfilePageLayout role={role} />} />
           {role === "admin" ? (
             <>
               <Route index path="/dashboard" element={<HomePage />} />
@@ -31,9 +34,12 @@ function App() {
             </>
           ) : (
             <>
-              <Route path="/profile" element={<ProfilePageLayout />} />
-              <Route index path="/trainings" element={<TrainingPage />} />
-              <Route path="/topics" element={<TopicsPage />} />
+              <Route
+                index
+                path="/trainings"
+                element={<EmployeeTrainingsPage />}
+              />
+              <Route path="/topics" element={<EmployeeTopicsPage />} />
             </>
           )}
         </Route>
