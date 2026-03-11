@@ -3,13 +3,18 @@ import { useLocation } from "react-router-dom";
 import { type Location } from "react-router-dom";
 import NotificationIcon from "@/assets/notification_icon.svg?react";
 import LogoutIcon from "@/assets/logout_icon.svg?react";
+import type { IHeaderProps } from "./IHeader.types";
 
-const Header = () => {
+const Header = ({ togglePopup }: IHeaderProps) => {
   const location: Location = useLocation();
 
   const path: string = location.pathname.replace("/", "");
 
   const capitalized: string = path.charAt(0).toUpperCase() + path.slice(1);
+
+  const handleClick = (): void => {
+    togglePopup();
+  };
 
   return (
     <header className={styles.header}>
@@ -19,7 +24,7 @@ const Header = () => {
           <NotificationIcon className={styles.notification__icon} />
           <span className={styles.notification__count}>3</span>
         </div>
-        <LogoutIcon className={styles.logout} />
+        <LogoutIcon className={styles.logout} onClick={handleClick} />
       </div>
     </header>
   );
