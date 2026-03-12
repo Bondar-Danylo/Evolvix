@@ -18,29 +18,20 @@
     z-index: 10;
     position: relative;
 }
-.notification {
-    position: relative;
+.chatbot {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
     cursor: pointer;
-    margin-right: 25px;
-    &__count {
-        padding: 5px;
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--white_color);
-        background-color: var(--red_color);
-        border-radius: 50px;
-        font-size: 12px;
-        font-weight: var(--bold_weight);
-        position: absolute;
-        top: -10px;
-        right: -15px;
+    &__icon {
+        width: 100%;
+        height: 100%;
+        color: var(--dark-blue_color);
     }
 }
 .logout {
     cursor: pointer;
+    color: var(--dark-blue_color);
 }
 
 // Media Queries
@@ -52,7 +43,7 @@
     .notification__icon {
         color: var(--white_color);
     }
-    .logout {
+    .logout, .chatbot__icon {
         color: var(--white_color);
-    }
+    } 
 }

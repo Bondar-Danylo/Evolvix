@@ -6,9 +6,11 @@ import Aside from "@/components/Aside/Aside";
 import SmallPopup from "@/components/SmallPopup/SmallPopup";
 import alertIcon from "@/assets/attention-triangle_icon.svg";
 import { useState } from "react";
+import ChatBot from "@/components/ChatBot/ChatBot";
 
 const DashboardLayout = ({ role }: any) => {
   const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [showChatbot, setShowChatbot] = useState<boolean>(false);
 
   const handleLogout = (): void => {
     localStorage.clear();
@@ -19,10 +21,17 @@ const DashboardLayout = ({ role }: any) => {
     <div className={styles.wrapper}>
       <Aside role={role} />
       <div className={styles.content}>
-        <Header togglePopup={() => setShowPopup(true)} />
+        <Header
+          togglePopup={() => setShowPopup(true)}
+          openChatbot={() => setShowChatbot(true)}
+        />
         <main className={styles.main}>
           <PageTitle>The Park Tower Knightsbridge</PageTitle>
           <Outlet />
+
+          {showChatbot && (
+            <ChatBot closeChatbot={(): void => setShowChatbot(false)} />
+          )}
           {showPopup && (
             <SmallPopup
               icon={alertIcon}

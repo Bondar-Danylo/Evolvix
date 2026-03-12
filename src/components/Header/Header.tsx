@@ -1,11 +1,11 @@
 import styles from "./Header.module.scss";
 import { useLocation } from "react-router-dom";
 import { type Location } from "react-router-dom";
-import NotificationIcon from "@/assets/notification_icon.svg?react";
+import ChatbotIcon from "@/assets/chatbot_icon.svg?react";
 import LogoutIcon from "@/assets/logout_icon.svg?react";
 import type { IHeaderProps } from "./IHeader.types";
 
-const Header = ({ togglePopup }: IHeaderProps) => {
+const Header = ({ togglePopup, openChatbot }: IHeaderProps) => {
   const location: Location = useLocation();
 
   const path: string = location.pathname.replace("/", "");
@@ -20,9 +20,8 @@ const Header = ({ togglePopup }: IHeaderProps) => {
     <header className={styles.header}>
       <span className={styles.breadcrums}>{capitalized}</span>
       <div className={styles.wrapper}>
-        <div className={styles.notification}>
-          <NotificationIcon className={styles.notification__icon} />
-          <span className={styles.notification__count}>3</span>
+        <div className={styles.chatbot}>
+          <ChatbotIcon className={styles.chatbot__icon} onClick={openChatbot} />
         </div>
         <LogoutIcon className={styles.logout} onClick={handleClick} />
       </div>
