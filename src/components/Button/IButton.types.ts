@@ -6,4 +6,5 @@ export interface ButtonProps {
     size?: 'small' | 'medium' | 'large',
     children: string | React.ReactNode,
     textSize?: 'lower' | 'upper',
+    onClick?: () => void;
 }

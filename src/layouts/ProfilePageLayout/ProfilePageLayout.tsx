@@ -86,13 +86,13 @@ const ProfilePageLayout = ({ role }: IRole) => {
         <ContactInput
           type="phone"
           value={phone}
-          icon={phoneIcon}
+          icon={padlockIcon}
           onChange={setPhone}
         />
         <ContactInput
           type="password"
           value={password}
-          icon={padlockIcon}
+          icon={phoneIcon}
           onChange={setPassword}
         />
       </div>

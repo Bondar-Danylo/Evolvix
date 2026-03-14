@@ -16,7 +16,7 @@ export const TablePageLayout = <
   searchKeys,
   dropdownOptions,
   addButtonText,
-  // onAddClick,
+  onAddClick,
   onRowClick,
   editable,
 }: TablePageLayoutProps<T>) => {
@@ -64,7 +64,12 @@ export const TablePageLayout = <
           />
         </div>
         {editable ?? (
-          <Button type="button" size="medium" color="light">
+          <Button
+            type="button"
+            size="medium"
+            color="light"
+            onClick={onAddClick}
+          >
             {addButtonText}
           </Button>
         )}

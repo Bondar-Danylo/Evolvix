@@ -9,9 +9,11 @@ const Button = ({
   size = "medium",
   textSize = "upper",
   children,
+  onClick,
 }: ButtonProps): JSX.Element => {
   return (
     <button
+      onClick={onClick}
       className={cn(
         styles.button,
         styles[size],

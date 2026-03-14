@@ -37,8 +37,8 @@ const LoginPage = ({ setRole }: ILoginPageProps) => {
       const result = await response.json();
 
       if (result.success) {
-        localStorage.setItem("userRole", result.user.role);
-        localStorage.setItem("isAuth", "true");
+        sessionStorage.setItem("userRole", result.user.role);
+        sessionStorage.setItem("isAuth", "true");
         setRole(result.user.role);
         result.user.role === "admin"
           ? navigate("/dashboard")

@@ -3,7 +3,6 @@ import styles from "./Dropdown.module.scss";
 import type { IDropdown } from "./IDropdown.types";
 import ChevronIcon from "@/assets/chevron_icon.svg?react";
 import DeleteIcon from "@/assets/delete_icon.svg?react";
-import PlusIcon from "@/assets/plus_icon.svg?react";
 
 const Dropdown = ({
   options: initialOptions,
@@ -108,7 +107,7 @@ const Dropdown = ({
               >
                 <span className={styles.dropdown__option}>{item}</span>
 
-                {editable && (
+                {editable ?? (
                   <DeleteIcon
                     className={styles.dropdown__delete}
                     onClick={(e: React.MouseEvent<SVGSVGElement>): void =>
@@ -120,12 +119,6 @@ const Dropdown = ({
             );
           })}
         </ul>
-        {editable ?? (
-          <button className={styles.dropdown__add}>
-            <PlusIcon className={styles.dropdown__icon} />
-            Add
-          </button>
-        )}
       </div>
     </div>
   );

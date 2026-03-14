@@ -13,10 +13,10 @@ import EmployeeTopicsPage from "./pages/EmployeeTopicsPage/EmployeeTopicsPage";
 
 function App() {
   const [role, setRole] = useState<"admin" | "user">(() => {
-    return (localStorage.getItem("userRole") as "admin" | "user") || "user";
+    return (sessionStorage.getItem("userRole") as "admin" | "user") || "user";
   });
 
-  const isAuth = localStorage.getItem("isAuth") === "true";
+  const isAuth = sessionStorage.getItem("isAuth") === "true";
 
   return (
     <BrowserRouter>
