@@ -1,6 +1,6 @@
 .wrapper {
     width: 100%;
-    & > div {
+    & > div:first-child {
         margin: 0;
         height: fit-content;
         & > div {

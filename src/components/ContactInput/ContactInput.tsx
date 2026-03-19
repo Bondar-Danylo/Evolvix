@@ -4,21 +4,35 @@ import type { IContactInputProps } from "./IContactInput.types";
 import EditIcon from "@/assets/edit_icon.svg?react";
 import EyeIcon from "@/assets/eye_icon.svg?react";
 
-const ContactInput = ({ type, icon, value, onChange }: IContactInputProps) => {
+const ContactInput = ({
+  type,
+  icon,
+  value,
+  onChange,
+  onBlur,
+}: IContactInputProps) => {
   const [editable, setEditable] = useState<boolean>(true);
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     onChange(event.target.value);
   };
 
   const handleIconClick = (): void => {
+    if (type === "password") onChange("");
     setEditable(false);
     setTimeout(() => inputRef.current?.focus(), 0);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleBlur = (): void => {
+    setEditable(true);
+    if (onBlur) onBlur();
+  };
+
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ): void => {
     if (event.key === "Enter") {
       setEditable(true);
       inputRef.current?.blur();
@@ -38,7 +52,7 @@ const ContactInput = ({ type, icon, value, onChange }: IContactInputProps) => {
         value={value}
         readOnly={editable}
         onChange={handleChange}
-        onBlur={() => setEditable(true)}
+        onBlur={handleBlur}
         className={styles.input}
         onKeyDown={handleKeyDown}
       />

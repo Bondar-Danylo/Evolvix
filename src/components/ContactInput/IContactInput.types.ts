@@ -3,4 +3,5 @@ export interface  IContactInputProps {
     icon: string,
     value: string,
     onChange: (newValue: string) => void;
+    onBlur?: () => void;
 }

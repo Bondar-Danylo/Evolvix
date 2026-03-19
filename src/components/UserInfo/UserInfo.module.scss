@@ -14,4 +14,10 @@
         color: var(--grey_color);
         font-size: var(--tiny_size);
     }
+    img {
+        width: 100px;
+        height: 100px;
+        border-radius: 100%;
+        border: 2px solid var(--main_color);
+    }
 }
