@@ -39,6 +39,7 @@ const LoginPage = ({ setRole }: ILoginPageProps) => {
       if (result.success) {
         sessionStorage.setItem("userRole", result.user.role);
         sessionStorage.setItem("isAuth", "true");
+        sessionStorage.setItem("userID", result.user.id);
         setRole(result.user.role);
         result.user.role === "admin"
           ? navigate("/dashboard")

@@ -6,6 +6,7 @@ export interface TableProps<T> {
   columns: IColumn<T>[];
   focusedIndex?: number;
   onRowMouseEnter?: (index: number) => void;
+  onRowClick?: (record: T) => void;
 }
 
 export const Table = <T extends { id: string | number }>({
@@ -13,6 +14,7 @@ export const Table = <T extends { id: string | number }>({
   columns,
   focusedIndex,
   onRowMouseEnter,
+  onRowClick,
 }: TableProps<T>) => {
   return (
     <table className={styles.table}>
@@ -24,19 +26,27 @@ export const Table = <T extends { id: string | number }>({
         </tr>
       </thead>
       <tbody>
-        {data.map((row, index) => (
+        {data.map((record, index) => (
           <tr
-            key={row.id}
-            className={index === focusedIndex ? styles.focusedRow : ""}
+            key={record.id}
+            className={focusedIndex === index ? styles.focused : ""}
             onMouseEnter={() => onRowMouseEnter?.(index)}
+            // ВЕШАЕМ КЛИК НА СТРОКУ
+            onClick={() => onRowClick?.(record)}
+            style={{ cursor: "pointer" }}
           >
-            {columns.map((col, colIdx) => (
-              <td key={colIdx}>
-                {col.render
-                  ? col.render(row[col.key as keyof T], row)
-                  : (row[col.key as keyof T] as any)}
-              </td>
-            ))}
+            {columns.map((col) => {
+              const cellValue =
+                col.key in record ? record[col.key as keyof T] : undefined;
+
+              return (
+                <td key={String(col.key)}>
+                  {col.render
+                    ? col.render(cellValue, record)
+                    : (cellValue as React.ReactNode)}
+                </td>
+              );
+            })}
           </tr>
         ))}
       </tbody>

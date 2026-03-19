@@ -96,7 +96,7 @@ const EmployeeTopicsPage = () => {
         searchKeys={["name"]}
         dropdownOptions={["New", "Viewed", "Updated", "Mandatory"]}
         addButtonText=""
-        editable={false}
+        editable={true}
       />
     </div>
   );

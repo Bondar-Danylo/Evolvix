@@ -2,14 +2,8 @@ import { useState, useEffect } from "react";
 import styles from "./Dropdown.module.scss";
 import type { IDropdown } from "./IDropdown.types";
 import ChevronIcon from "@/assets/chevron_icon.svg?react";
-import DeleteIcon from "@/assets/delete_icon.svg?react";
 
-const Dropdown = ({
-  options: initialOptions,
-  editable,
-  value,
-  onChange,
-}: IDropdown) => {
+const Dropdown = ({ options: initialOptions, value, onChange }: IDropdown) => {
   const [options, setOptions] = useState<string[]>(initialOptions);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
@@ -23,20 +17,6 @@ const Dropdown = ({
   const selectItem = (itemValue: string): void => {
     onChange(itemValue);
     setIsOpen(false);
-    setFocusedIndex(-1);
-  };
-
-  const deleteItem = (e: React.MouseEvent, indexToDelete: number): void => {
-    e.stopPropagation();
-    const itemToDelete = options[indexToDelete];
-    const newOptions = options.filter(
-      (_, index: number) => index !== indexToDelete,
-    );
-    setOptions(newOptions);
-
-    if (value === itemToDelete) {
-      onChange("");
-    }
     setFocusedIndex(-1);
   };
 
@@ -106,15 +86,6 @@ const Dropdown = ({
                 onMouseEnter={(): void => setFocusedIndex(actualIndex)}
               >
                 <span className={styles.dropdown__option}>{item}</span>
-
-                {editable ?? (
-                  <DeleteIcon
-                    className={styles.dropdown__delete}
-                    onClick={(e: React.MouseEvent<SVGSVGElement>): void =>
-                      deleteItem(e, index)
-                    }
-                  />
-                )}
               </li>
             );
           })}

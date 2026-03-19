@@ -1,12 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import type { ChangeEvent, KeyboardEvent } from "react";
+import type { KeyboardEvent } from "react";
 import styles from "./ChatBot.module.scss";
 import { faqData } from "./faqData";
 import type { IMessage } from "./IMessage.types";
 import type { IChatBotProps } from "./IChatBotProps.types";
+import closeIcon from "@/assets/close_icon.svg";
 
 const ChatBot = ({ closeChatbot }: IChatBotProps) => {
-  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [messages, setMessages] = useState<IMessage[]>([
+    { id: 1, sender: "Bot", text: "Hello! How can I help you today?" },
+  ]);
   const [inputValue, setInputValue] = useState<string>("");
   const windowRef = useRef<HTMLDivElement>(null);
 
@@ -25,14 +28,13 @@ const ChatBot = ({ closeChatbot }: IChatBotProps) => {
 
   const getBotResponse = (input: string): void => {
     const lowerInput = input.toLowerCase();
-
     const foundItem = faqData.find((item) =>
       item.keywords.some((keyword) => lowerInput.includes(keyword)),
     );
 
     const response = foundItem
       ? foundItem.answer
-      : "Sorry, I don't understand that. Could you try asking something else?";
+      : "I'm not sure I understand. Could you please rephrase your question?";
 
     addMessage("Bot", response);
   };
@@ -46,11 +48,7 @@ const ChatBot = ({ closeChatbot }: IChatBotProps) => {
 
     setTimeout(() => {
       getBotResponse(trimmedText);
-    }, 500);
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setInputValue(e.target.value);
+    }, 600);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {
@@ -60,16 +58,23 @@ const ChatBot = ({ closeChatbot }: IChatBotProps) => {
   return (
     <div className={styles.wrapper} onClick={closeChatbot}>
       <div className={styles.chatbot} onClick={(e) => e.stopPropagation()}>
-        <h3 className={styles.title}>ChatBot</h3>
+        <div className={styles.header}>
+          <h3>Support Assistant</h3>
+          <button className={styles.closeX} onClick={closeChatbot}>
+            <img src={closeIcon} alt="Close Icon" />
+          </button>
+        </div>
 
         <div className={styles.window} ref={windowRef}>
           {messages.map((msg) => (
-            <p
+            <div
               key={msg.id}
-              className={msg.sender === "You" ? styles.user : styles.bot}
+              className={`${styles.messageRow} ${msg.sender === "You" ? styles.userRow : styles.botRow}`}
             >
-              <span>{msg.sender}:</span> {msg.text}
-            </p>
+              <div className={styles.bubble}>
+                <div className={styles.text}>{msg.text}</div>
+              </div>
+            </div>
           ))}
         </div>
 
@@ -77,12 +82,12 @@ const ChatBot = ({ closeChatbot }: IChatBotProps) => {
           <input
             type="text"
             className={styles.input}
-            placeholder="Type your message..."
+            placeholder="Ask a question..."
             value={inputValue}
-            onChange={handleChange}
+            onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
           />
-          <button className={styles.button} onClick={handleSend}>
+          <button className={styles.sendBtn} onClick={handleSend}>
             Send
           </button>
         </div>

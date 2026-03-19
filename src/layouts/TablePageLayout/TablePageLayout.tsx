@@ -24,7 +24,6 @@ export const TablePageLayout = <
 
   const categoryFilteredData = useMemo(() => {
     if (!selectedCategory) return data;
-
     return data.filter((item) => {
       return Object.values(item).includes(selectedCategory);
     });
@@ -63,7 +62,7 @@ export const TablePageLayout = <
             onChange={setSelectedCategory}
           />
         </div>
-        {editable ?? (
+        {!editable && (
           <Button
             type="button"
             size="medium"
@@ -81,6 +80,7 @@ export const TablePageLayout = <
           columns={columns}
           focusedIndex={focusedIndex}
           onRowMouseEnter={setFocusedIndex}
+          onRowClick={onRowClick}
         />
         {filteredData.length === 0 && (
           <p className={styles.error}>No results found</p>

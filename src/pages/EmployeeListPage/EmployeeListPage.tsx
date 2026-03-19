@@ -7,13 +7,15 @@ import { TableActions } from "@/components/TableAction/TableActions";
 import AddEmployeePopup from "@/components/AddEmployeePopup/AddEmployeePopup";
 import SmallPopup from "@/components/SmallPopup/SmallPopup";
 import attentionIcon from "@/assets/attention-triangle_icon.svg";
+import EmployeeViewPopup from "@/components/EmployeeViewPopup/EmployeeViewPopup";
 
 const EmployeeListPage = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<Employee | null>(null);
   const [userToEdit, setUserToEdit] = useState<Employee | null>(null);
-  const [positionOptions, setPositionOptions] = useState<string[]>(["All"]);
+  const [positionOptions, setPositionOptions] = useState<string[]>([]);
+  const [viewEmployee, setViewEmployee] = useState<Employee | null>(null);
 
   const fetchEmployees = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/get_users.php`);
@@ -26,7 +28,7 @@ const EmployeeListPage = () => {
       `${import.meta.env.VITE_API_URL}/get_positions.php`,
     );
     const result = await res.json();
-    if (result.success) setPositionOptions(["All", ...result.positions]);
+    if (result.success) setPositionOptions([...result.positions]);
   };
 
   useEffect(() => {
@@ -42,6 +44,10 @@ const EmployeeListPage = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setUserToEdit(null);
+  };
+
+  const handleRowClick = (employee: Employee) => {
+    setViewEmployee(employee);
   };
 
   const confirmDelete = async () => {
@@ -66,10 +72,10 @@ const EmployeeListPage = () => {
     },
     {
       header: "Actions",
-      key: "id",
+      key: "actions",
       render: (_, record) => (
         <TableActions
-          onView={() => console.log("View", record.id)}
+          onView={() => handleRowClick(record)}
           onEdit={() => handleEdit(record)}
           onDelete={() => setUserToDelete(record)}
         />
@@ -86,6 +92,7 @@ const EmployeeListPage = () => {
         dropdownOptions={positionOptions}
         addButtonText="Add Employee"
         onAddClick={() => setIsModalOpen(true)}
+        onRowClick={handleRowClick}
       />
 
       {isModalOpen && (
@@ -107,6 +114,13 @@ const EmployeeListPage = () => {
           text={`You won't be able to recover their training progress`}
           closePopup={() => setUserToDelete(null)}
           onConfirm={confirmDelete}
+        />
+      )}
+
+      {viewEmployee && (
+        <EmployeeViewPopup
+          employee={viewEmployee}
+          closePopup={() => setViewEmployee(null)}
         />
       )}
     </>

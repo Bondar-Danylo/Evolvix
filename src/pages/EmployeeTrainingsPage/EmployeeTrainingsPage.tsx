@@ -94,7 +94,7 @@ const EmployeeTrainingsPage = () => {
         searchKeys={["name"]}
         dropdownOptions={["Completed", "Failed"]}
         addButtonText=""
-        editable={false}
+        editable={true}
       />
     </div>
   );

@@ -1,0 +1,246 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 35, 41, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.popup {
+  background: var(--white_color);
+  width: 100%;
+  max-width: 520px;
+  border-radius: 24px;
+  box-shadow: var(--normal_shadow);
+  position: relative;
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+  max-height: 90vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.popup::-webkit-scrollbar {
+  width: 6px;
+}
+
+.popup::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.popup::-webkit-scrollbar-thumb {
+  background: #eef1f4;
+  border-radius: 10px;
+}
+
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  opacity: 0.5;
+  transition: var(--normal_transition);
+  &:hover { opacity: 1; }
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+
+
+.profileHeader {
+  padding: 40px 30px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(180deg, #f8faff 0%, #ffffff 100%);
+}
+
+.avatarWrapper {
+  width: 110px;
+  height: 110px;
+  position: relative;
+  margin-bottom: 25px;
+  background: none; 
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 35%; 
+    border: 4px solid var(--white_color);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    background: #f0f2f5;
+  }
+}
+
+.mainInfo {
+  h2 {
+    font-size: var(--subtitle_size);
+    font-weight: var(--bold_weight);
+    color: var(--dark-graphite_color);
+    margin: 0 0 4px 0;
+  }
+
+  .position {
+    font-size: var(--normal_size);
+    color: var(--grey_color);
+    margin-bottom: 12px;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 6px 14px;
+    background: #e8f1ff;
+    color: var(--main_color);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 0 30px 30px;
+}
+
+.card {
+  padding: 20px;
+  border-radius: 16px;
+  background: var(--white_color);
+  border: 1px solid var(--grey_color);
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s;
+
+  span {
+    font-size: var(--tiny_size);
+    color: var(--graphite_color);
+    margin-bottom: 10px;
+  }
+
+  strong {
+    font-size: var(--normal_size);
+    color: var(--black_color);
+    font-weight: var(--bold_weight);
+  }
+
+  small {
+    font-size: var(--tiny_size);
+    color: var(--graphite_color);
+    margin-top: 6px;
+  }
+}
+
+.progressBox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+
+  strong {
+    font-size: var(--normal_size);
+  }
+}
+
+.footer {
+  padding: 20px 30px;
+  border-top: 1px solid #efefef;
+  display: flex;
+  justify-content: center;
+  background: #fafbfc;
+
+  button {
+    min-width: 140px;
+    font-weight: var(--bold_weight);
+  }
+}
+
+.statusBadge {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: var(--black_weight);
+  text-transform: uppercase;
+  color: var(--white_color);
+  border: 2px solid var(--white_color);
+  white-space: nowrap;
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.onboarding { 
+    background: var(--dark-yellow_color); 
+}
+.newbie { 
+    background: var(--second_color); 
+}   
+.senior { 
+    background: var(--dark-green_color); 
+}     
+.upcoming { 
+  background: var(--purple_color); 
+}
+.fullWidth {
+  grid-column: span 2;
+}
+
+.progressBox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 5px;
+  
+  strong {
+    font-size: var(--subtitle_size);
+  }
+}
+
+.contactRow {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 5px;
+  word-break: break-word; 
+  overflow-wrap: break-word;
+
+  .divider {
+    width: 1px;
+    height: 15px;
+    background: var(--dark-graphite_color);
+  }
+}
+
+// Media Queries
+@media screen and (max-width: 575px) {
+    .grid {
+        display: flex;
+        flex-direction: column;
+    }
+    .card {
+        padding: 15px;
+    }
+    .contactRow {
+        flex-wrap: wrap;
+    }
+    .divider {
+        display: none;
+    }
+}
