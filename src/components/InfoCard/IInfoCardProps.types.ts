@@ -2,8 +2,15 @@ export interface IInfoCardData {
     id: number,
     title: string,
 }
+interface InfoItem {
+    id: string | number;
+    title: string;
+    type?: "user" | "training" | "topic";
+    target_id?: number | string;
+}
 
 export interface IInfoCardProps {
-    children: string,
-    data: IInfoCardData[]
+    data: InfoItem[];
+    children: React.ReactNode; 
+    onItemClick?: (item: InfoItem) => void;
 }

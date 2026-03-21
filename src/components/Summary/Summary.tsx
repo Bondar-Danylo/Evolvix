@@ -1,59 +1,82 @@
 import styles from "./Summary.module.scss";
 import Button from "@/components/Button/Button";
 import checkedIcon from "@/assets/check_icon.svg";
-import type { ISummary } from "./ISummary.types";
+import type { ISummaryProps } from "./ISummary.types";
 
-const Summary = () => {
-  const data: ISummary[] = [
-    {
-      title: "6 days",
-      subtitle: "Average onboarding duration",
-    },
-    {
-      title: "18",
-      subtitle: "Trainings",
-    },
-    {
-      title: "2m 54s",
-      subtitle: "Average Time for Pass",
-    },
-    {
-      title: "84",
-      subtitle: "Topics",
-    },
-  ];
+const Summary = ({ data }: ISummaryProps) => {
+  const progressValue = data?.targetPercent || 0;
+
+  const summaryList = data
+    ? [
+        {
+          title: data.successRate,
+          subtitle: "Quiz Success Rate",
+        },
+        {
+          title: data.trainingsCount.toString(),
+          subtitle: "Trainings",
+        },
+        {
+          title: data.mostActiveDept,
+          subtitle: "Most Active Dept",
+        },
+        {
+          title: data.topicsCount.toString(),
+          subtitle: "Topics",
+        },
+      ]
+    : [];
+
+  const handleDownload = (): void => {
+    const API_URL: string = import.meta.env.VITE_API_URL;
+    const link: HTMLAnchorElement = document.createElement("a");
+    link.href = `${API_URL}/generate_report.php`;
+    link.setAttribute("download", "report.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className={styles.summary}>
       <ul className={styles.list}>
-        {data.map((item: ISummary) => {
-          return (
-            <li key={item.subtitle} className={styles.list__item}>
-              <h2 className={styles.list__title}>{item.title}</h2>
-              <p className={styles.list__subtitle}>{item.subtitle}</p>
-            </li>
-          );
-        })}
+        {summaryList.map((item) => (
+          <li key={item.subtitle} className={styles.list__item}>
+            <h2 className={styles.list__title}>{item.title}</h2>
+            <p className={styles.list__subtitle}>{item.subtitle}</p>
+          </li>
+        ))}
       </ul>
+
       <div className={styles.summary__bottom}>
         <div className={styles.wrapper}>
           <div className={styles.progress}>
-            <span className={styles.progress__bar}></span>
+            <span
+              className={styles.progress__bar}
+              style={
+                {
+                  "--progress-width": `${progressValue}%`,
+                } as React.CSSProperties
+              }
+            ></span>
+
             <div className={styles.target}>
               <img
                 src={checkedIcon}
                 alt="Checked Icon"
                 className={styles.progress__icon}
               />
-              <p className={styles.progress__text}>90% of Target</p>
+              <p className={styles.progress__text}>
+                {progressValue}% of Target
+              </p>
             </div>
           </div>
           <p className={styles.summary__analytic}>
             The onboarding process has been accelerated by{" "}
-            <span>1.4 times</span>
+            <span>{data?.acceleration || "1.0 times"}</span>
           </p>
         </div>
-        <Button type="button" size="large">
+        <Button type="button" size="large" onClick={handleDownload}>
           Download Report
         </Button>
       </div>

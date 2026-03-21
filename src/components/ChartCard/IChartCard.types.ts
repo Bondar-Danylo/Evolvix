@@ -15,3 +15,8 @@ export interface IChartProps {
   children?: string,
   type?: 'line' | 'pie'
 }
+
+export interface IExtendedChartProps extends IChartProps {
+  onPeriodChange?: (days: number) => void;
+  currentPeriod?: number;
+}

@@ -42,11 +42,12 @@
         background-color: var(--grey_color);
         border-radius: var(--normal_radius);
         position: relative;
+        overflow: hidden;
         margin-right: 30px;
         &::after {
             content: '';
             display: block;
-            width: 90%;
+            width: var(--progress-width, 0%);
             height: 5px;
             background-color: var(--dark-green_color);
             border-radius: var(--normal_radius);

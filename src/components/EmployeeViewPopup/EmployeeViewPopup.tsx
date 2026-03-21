@@ -11,13 +11,12 @@ const EmployeeViewPopup = ({ employee, closePopup }: any) => {
     if (!dateString)
       return { tenureText: "Not started", status: "N/A", statusClass: "" };
 
-    const start = new Date(dateString);
-    const now = new Date();
+    const start: Date = new Date(dateString);
+    const now: Date = new Date();
 
     if (isNaN(start.getTime()))
       return { tenureText: "Invalid date", status: "Error", statusClass: "" };
 
-    // Добавляем класс для будущих сотрудников (например, styles.upcoming)
     if (start > now)
       return {
         tenureText: "Future hire",
@@ -25,11 +24,11 @@ const EmployeeViewPopup = ({ employee, closePopup }: any) => {
         statusClass: styles.upcoming,
       };
 
-    const diffTime = Math.abs(now.getTime() - start.getTime());
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diffTime: number = Math.abs(now.getTime() - start.getTime());
+    const diffDays: number = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-    let status = "Senior";
-    let statusClass = styles.senior;
+    let status: string = "Senior";
+    let statusClass: string = styles.senior;
 
     if (diffDays <= 7) {
       status = "Onboarding";
@@ -39,7 +38,6 @@ const EmployeeViewPopup = ({ employee, closePopup }: any) => {
       statusClass = styles.newbie;
     }
 
-    // ... расчет лет/месяцев без изменений ...
     let years = now.getFullYear() - start.getFullYear();
     let months = now.getMonth() - start.getMonth();
     if (months < 0) {
@@ -47,14 +45,19 @@ const EmployeeViewPopup = ({ employee, closePopup }: any) => {
       months += 12;
     }
 
-    const yText = years > 0 ? `${years}y` : "";
-    const mText = months > 0 ? `${months}m` : "";
-    const tenureText = `${yText} ${mText}`.trim() || `${diffDays}d`;
+    const yText: string = years > 0 ? `${years}y` : "";
+    const mText: string = months > 0 ? `${months}m` : "";
+    const tenureText: string = `${yText} ${mText}`.trim() || `${diffDays}d`;
 
     return { tenureText, status, statusClass };
   };
 
   const info = getTenureInfo(dateToUse);
+
+  const API_URL: string = import.meta.env.VITE_API_URL;
+  const avatarSrc: string = employee.photo_url
+    ? `${API_URL}/${employee.photo_url}`
+    : defaultAvatar;
 
   return (
     <div className={styles.overlay} onClick={closePopup}>
@@ -65,7 +68,7 @@ const EmployeeViewPopup = ({ employee, closePopup }: any) => {
 
         <div className={styles.profileHeader}>
           <div className={styles.avatarWrapper}>
-            <img src={employee.photo_url || defaultAvatar} alt="profile" />
+            <img src={avatarSrc} alt="profile" />
             <span className={`${styles.statusBadge} ${info.statusClass}`}>
               {info.status}
             </span>
