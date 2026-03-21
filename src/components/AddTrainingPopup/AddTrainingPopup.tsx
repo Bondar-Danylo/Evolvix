@@ -13,6 +13,8 @@ const AddTrainingPopup = ({
   initialData,
 }: AddTrainingPopupProps) => {
   const [loading, setLoading] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false); // Отдельный лоадер для ИИ
+
   const [name, setName] = useState(initialData?.name || "");
   const [dept, setDept] = useState(initialData?.department || "");
   const [description, setDescription] = useState(
@@ -46,6 +48,8 @@ const AddTrainingPopup = ({
     }
   };
 
+  // --- Логика Конструктора ---
+
   const addQuestion = (): void => {
     setQuestions([
       ...questions,
@@ -56,9 +60,21 @@ const AddTrainingPopup = ({
     ]);
   };
 
+  const removeQuestion = (qIdx: number): void => {
+    setQuestions(questions.filter((_, index) => index !== qIdx));
+  };
+
   const addAnswer = (qIdx: number): void => {
     const newQs = [...questions];
     newQs[qIdx].answers.push({ answer_text: "", is_correct: false });
+    setQuestions(newQs);
+  };
+
+  const removeAnswer = (qIdx: number, aIdx: number): void => {
+    const newQs = [...questions];
+    newQs[qIdx].answers = newQs[qIdx].answers.filter(
+      (_, index) => index !== aIdx,
+    );
     setQuestions(newQs);
   };
 
@@ -69,6 +85,49 @@ const AddTrainingPopup = ({
     setQuestions(newQs);
   };
 
+  // --- ИИ Генерация ---
+
+  const generateAIQuestions = async (): Promise<void> => {
+    if (!description || description.length < 30) {
+      alert("Please add some training material first so AI can analyze it.");
+      return;
+    }
+
+    setAiLoading(true);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/generate_questions.php`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: description }),
+        },
+      );
+
+      const result = await response.json();
+
+      if (result.success && Array.isArray(result.questions)) {
+        const aiQs: Question[] = result.questions.map((q: any) => ({
+          question_text: q.question_text,
+          answers: q.answers.map((a: any) => ({
+            answer_text: a.answer_text,
+            is_correct: Boolean(Number(a.is_correct)),
+          })),
+        }));
+        setQuestions([...questions, ...aiQs]);
+      } else {
+        alert(result.message || "AI failed to generate questions.");
+      }
+    } catch (error) {
+      console.error("AI Error:", error);
+      alert("Failed to connect to AI service.");
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  // --- Сохранение ---
+
   const handleSubmit = async (): Promise<void> => {
     if (!name || !dept || !description || questions.length === 0) {
       alert("Please fill all fields and add at least one question.");
@@ -77,19 +136,13 @@ const AddTrainingPopup = ({
 
     setLoading(true);
     const formData = new FormData();
-
-    // Если это редактирование, добавляем ID
-    if (initialData?.id) {
-      formData.append("id", initialData.id.toString());
-    }
-
+    if (initialData?.id) formData.append("id", initialData.id.toString());
     formData.append("name", name);
     formData.append("department", dept);
     formData.append("description", description);
     if (image) formData.append("image", image);
     formData.append("questions", JSON.stringify(questions));
 
-    // Выбираем эндпоинт в зависимости от режима
     const endpoint = initialData ? "update_training.php" : "save_training.php";
 
     try {
@@ -102,11 +155,8 @@ const AddTrainingPopup = ({
       );
 
       const result = await response.json();
-      if (result.success) {
-        onSuccess();
-      } else {
-        alert("Error: " + result.message);
-      }
+      if (result.success) onSuccess();
+      else alert("Error: " + result.message);
     } catch (error) {
       console.error("Save error:", error);
       alert("Server connection failed");
@@ -192,20 +242,36 @@ const AddTrainingPopup = ({
                   Mark one or more answers as correct
                 </p>
               </div>
+              <Button
+                type="button"
+                color="light"
+                size="medium"
+                onClick={generateAIQuestions}
+              >
+                {aiLoading ? "AI is thinking..." : "✨ Generate by AI"}
+              </Button>
             </div>
 
             {questions.map((q, qIdx) => (
               <div key={qIdx} className={styles.qCard}>
-                <input
-                  className={styles.qInput}
-                  value={q.question_text}
-                  onChange={(e) => {
-                    const n = [...questions];
-                    n[qIdx].question_text = e.target.value;
-                    setQuestions(n);
-                  }}
-                  placeholder={`Question #${qIdx + 1}`}
-                />
+                <div className={styles.qHeader}>
+                  <input
+                    className={styles.qInput}
+                    value={q.question_text}
+                    onChange={(e) => {
+                      const n = [...questions];
+                      n[qIdx].question_text = e.target.value;
+                      setQuestions(n);
+                    }}
+                    placeholder={`Question #${qIdx + 1}`}
+                  />
+                  <button
+                    className={styles.removeBtn}
+                    onClick={() => removeQuestion(qIdx)}
+                  >
+                    ✕
+                  </button>
+                </div>
 
                 <div className={styles.answersList}>
                   {q.answers.map((ans, aIdx) => (
@@ -226,6 +292,14 @@ const AddTrainingPopup = ({
                         }}
                         placeholder="Option text..."
                       />
+                      {q.answers.length > 1 && (
+                        <button
+                          className={styles.removeAns}
+                          onClick={() => removeAnswer(qIdx, aIdx)}
+                        >
+                          ✕
+                        </button>
+                      )}
                     </div>
                   ))}
                   <button

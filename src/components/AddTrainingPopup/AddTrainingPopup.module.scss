@@ -191,7 +191,6 @@
   background: transparent;
   font-weight: var(--bold_weight);
   font-size: var(--normal_size);
-  margin-bottom: 20px;
   outline: none;
   color: var(--dark-graphite_color);
     &:focus { 
@@ -201,6 +200,14 @@
         color: var(--dark-graphite_color); 
         font-weight: var(--medium_weight); 
     }
+}
+.removeBtn {
+  cursor: pointer;
+  font-size: var(--subtitle_size);
+  margin-left: 10px;
+  &:hover {
+    opacity: 0.6;
+  }
 }
 
 .ansRow {
@@ -263,6 +270,11 @@
         color: var(--main_color); 
         background: var(--light-bg_color); 
     }
+}
+.qHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .footer {
