@@ -1,5 +1,4 @@
 import styles from "./Aside.module.scss";
-import ThemeToggler from "@/components/ThemeToggler/ThemeToggler";
 import Menu from "@/components/Menu/Menu";
 import UserInfo from "@/components/UserInfo/UserInfo";
 import HorizontalLogo from "@/components/HorizontalLogo/HorizontalLogo";
@@ -29,7 +28,6 @@ const Aside = ({ role }: any) => {
             onClickHandler={(e: React.MouseEvent<HTMLElement>) => toggleMenu(e)}
           />
         </nav>
-        <ThemeToggler />
       </div>
     </aside>
   );

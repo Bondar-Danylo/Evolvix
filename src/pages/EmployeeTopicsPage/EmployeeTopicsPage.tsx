@@ -1,75 +1,122 @@
+import { useState, useEffect, useCallback } from "react";
 import styles from "./EmployeeTopicsPage.module.scss";
 import { TablePageLayout } from "@/layouts/TablePageLayout/TablePageLayout";
 import type { IColumn } from "@/components/Table/Table.types";
 import StarIcon from "@/assets/star_icon.svg?react";
 import type { IEmployeeTopic } from "./IEmployeeTopic.types";
-import { useState } from "react";
+import TopicViewPopup from "@/components/TopicViewPopup/TopicViewPopup";
 
 const EmployeeTopicsPage = () => {
-  const [data, setData] = useState<IEmployeeTopic[]>([
-    {
-      id: 1,
-      name: "How to deal with chem...",
-      for: "All",
-      status: "New",
-      saved: true,
-    },
-    {
-      id: 2,
-      name: "How to carry heavy lug...",
-      for: "All",
-      status: "Viewed",
-      saved: false,
-    },
-    {
-      id: 3,
-      name: "LQA Standards",
-      for: "Manager",
-      status: "Updated",
-      saved: true,
-    },
-    {
-      id: 4,
-      name: "Marriott Standards",
-      for: "Manager",
-      status: "New",
-      saved: true,
-    },
-    {
-      id: 5,
-      name: "Luxury Guest Greeting",
-      for: "All",
-      status: "Mandatory",
-      saved: false,
-    },
-    { id: 6, name: "Allergens", for: "All", status: "Mandatory", saved: false },
-    {
-      id: 7,
-      name: "How to wash staff unif...",
-      for: "All",
-      status: "New",
-      saved: true,
-    },
-    {
-      id: 8,
-      name: "Best practice",
-      for: "Housekeeping",
-      status: "Updated",
-      saved: false,
-    },
-  ]);
+  const [data, setData] = useState<IEmployeeTopic[]>([]);
+  const [viewTopic, setViewTopic] = useState<IEmployeeTopic | null>(null);
 
-  const handleToggleSave = (id: number | string): void => {
-    setData((prevData) =>
-      prevData.map((topic) =>
-        topic.id === id ? { ...topic, saved: !topic.saved } : topic,
-      ),
-    );
-    console.log(`Topic ${id} toggled in database`);
+  const currentUserId: string | null = sessionStorage.getItem("userID");
+
+  const SEARCH_KEYS: (keyof IEmployeeTopic)[] = ["name"];
+  const STATUS_OPTIONS: string[] = [
+    "New",
+    "Viewed",
+    "Updated",
+    "Saved",
+    "Mandatory",
+  ];
+
+  const fetchTopics = useCallback(async (): Promise<void> => {
+    if (!currentUserId) return;
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/get_topics.php?user_id=${currentUserId}`,
+      );
+      const result = await res.json();
+
+      if (result.success) {
+        const mappedData: IEmployeeTopic[] = result.topics.map((t: any) => ({
+          id: t.id,
+          name: t.title,
+          content: t.content,
+          image_url: t.image_url,
+          for: t.department,
+          status: t.status,
+          saved: Boolean(t.is_saved),
+          views_count: Number(t.views_count),
+        }));
+        setData(mappedData);
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  }, [currentUserId]);
+
+  useEffect((): void => {
+    fetchTopics();
+  }, [fetchTopics]);
+
+  const handleToggleSave = async (
+    e: React.MouseEvent,
+    id: number | string,
+  ): Promise<void> => {
+    e.stopPropagation();
+    if (!currentUserId) return;
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/toggle_save.php`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic_id: id, user_id: currentUserId }),
+        },
+      );
+
+      if ((await res.json()).success) {
+        setData((prev) =>
+          prev.map((topic) => {
+            if (topic.id === id) {
+              const isNowSaved = !topic.saved;
+              return {
+                ...topic,
+                saved: isNowSaved,
+                status: isNowSaved ? "Saved" : "Viewed",
+              };
+            }
+            return topic;
+          }),
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleRowClick = async (topic: IEmployeeTopic): Promise<void> => {
+    setViewTopic(topic);
+    if (!currentUserId || topic.status !== "New") return;
+
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/increment_views.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: topic.id, user_id: currentUserId }),
+      });
+
+      setData((prev) =>
+        prev.map((t) =>
+          t.id === topic.id
+            ? {
+                ...t,
+                status: t.saved ? "Saved" : "Viewed",
+                views_count: t.views_count + 1,
+              }
+            : t,
+        ),
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const columns: IColumn<IEmployeeTopic>[] = [
-    { header: "ID", key: "id" },
     { header: "Name", key: "name" },
     { header: "For", key: "for" },
     { header: "Status", key: "status" },
@@ -80,7 +127,7 @@ const EmployeeTopicsPage = () => {
         <button
           type="button"
           className={styles.starButton}
-          onClick={() => handleToggleSave(record.id)}
+          onClick={(e) => handleToggleSave(e, record.id)}
         >
           <StarIcon className={`${value ? styles.saved : ""} ${styles.icon}`} />
         </button>
@@ -93,11 +140,19 @@ const EmployeeTopicsPage = () => {
       <TablePageLayout<IEmployeeTopic>
         data={data}
         columns={columns}
-        searchKeys={["name"]}
-        dropdownOptions={["New", "Viewed", "Updated", "Mandatory"]}
+        searchKeys={SEARCH_KEYS}
+        dropdownOptions={STATUS_OPTIONS}
         addButtonText=""
+        onRowClick={handleRowClick}
         editable={true}
       />
+
+      {viewTopic && (
+        <TopicViewPopup
+          topic={viewTopic}
+          closePopup={() => setViewTopic(null)}
+        />
+      )}
     </div>
   );
 };

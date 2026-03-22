@@ -1,7 +1,10 @@
 export interface IEmployeeTopic {
-  id: number;
-  name: string;   
-  for: string;    
-  status: 'New' | 'Updated' | 'Mandatory' | 'Viewed'; 
-  saved: boolean;   
+  id: number | string;
+  name: string;
+  for: string;
+  status: "New" | "Viewed" | "Updated" | "Mandatory" | "Saved"; 
+  saved: boolean;
+  views_count: number;
+  content?: string;
+  image_url?: string;
 }

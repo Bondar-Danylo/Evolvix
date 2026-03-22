@@ -18,7 +18,7 @@ const TopicsPage = () => {
   const [departmentOptions, setDepartmentOptions] = useState<string[]>([]);
   const [viewTopic, setViewTopic] = useState<Topics | null>(null);
 
-  const fetchTopics = async () => {
+  const fetchTopics = async (): Promise<void> => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/get_topics.php`);
       const result = await res.json();
@@ -28,7 +28,7 @@ const TopicsPage = () => {
     }
   };
 
-  const fetchDepartments = async () => {
+  const fetchDepartments = async (): Promise<void> => {
     try {
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/get_departments.php`,
@@ -40,25 +40,19 @@ const TopicsPage = () => {
     }
   };
 
-  useEffect(() => {
+  useEffect((): void => {
     fetchTopics();
     fetchDepartments();
   }, []);
 
-  /**
-   * Обработка клика по строке с ограничением просмотров в рамках сессии
-   */
-  const handleRowClick = async (topic: Topics) => {
-    // Получаем список уже просмотренных ID из sessionStorage
+  const handleRowClick = async (topic: Topics): Promise<void> => {
     const storageKey = "viewed_topics_ids";
     const viewedIds: number[] = JSON.parse(
       sessionStorage.getItem(storageKey) || "[]",
     );
 
-    const isAlreadyViewed = viewedIds.includes(topic.id);
+    const isAlreadyViewed: boolean = viewedIds.includes(topic.id);
 
-    // Сразу открываем попап просмотра.
-    // Если уже смотрели — число не меняем, если новый — прибавляем 1 визуально.
     const displayTopic = {
       ...topic,
       views_count: isAlreadyViewed
@@ -67,10 +61,8 @@ const TopicsPage = () => {
     };
     setViewTopic(displayTopic);
 
-    // Если в этой сессии топик еще не открывали, отправляем запрос на сервер
     if (!isAlreadyViewed) {
       try {
-        // Добавляем ID в список просмотренных и сохраняем в сессию
         viewedIds.push(topic.id);
         sessionStorage.setItem(storageKey, JSON.stringify(viewedIds));
 
@@ -80,7 +72,6 @@ const TopicsPage = () => {
           body: JSON.stringify({ id: topic.id }),
         });
 
-        // Обновляем список, чтобы данные в таблице синхронизировались
         fetchTopics();
       } catch (error) {
         console.error("Error incrementing views:", error);
@@ -88,12 +79,12 @@ const TopicsPage = () => {
     }
   };
 
-  const handleEdit = (topic: Topics) => {
+  const handleEdit = (topic: Topics): void => {
     setActiveTopic(topic);
     setIsModalOpen(true);
   };
 
-  const handleAdd = () => {
+  const handleAdd = (): void => {
     setActiveTopic(null);
     setIsModalOpen(true);
   };
