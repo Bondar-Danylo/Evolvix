@@ -3,7 +3,6 @@ import InfoCard from "@/components/InfoCard/InfoCard";
 import TopicViewPopup from "@/components/TopicViewPopup/TopicViewPopup";
 import TrainingViewPopup from "@/components/TrainingViewPopup/TrainingViewPopup";
 import styles from "./EmployeeProfilePage.module.scss";
-// Импортируем тип напрямую из ваших пропсов InfoCard
 import type { InfoItem } from "@/components/InfoCard/IInfoCardProps.types";
 
 const EmployeeProfilePage = () => {
