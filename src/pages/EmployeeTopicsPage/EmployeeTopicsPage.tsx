@@ -9,9 +9,8 @@ import TopicViewPopup from "@/components/TopicViewPopup/TopicViewPopup";
 const EmployeeTopicsPage = () => {
   const [data, setData] = useState<IEmployeeTopic[]>([]);
   const [viewTopic, setViewTopic] = useState<IEmployeeTopic | null>(null);
-
   const currentUserId: string | null = sessionStorage.getItem("userID");
-
+  const API_URL: string = import.meta.env.VITE_API_URL;
   const SEARCH_KEYS: (keyof IEmployeeTopic)[] = ["name"];
   const STATUS_OPTIONS: string[] = [
     "New",
@@ -26,7 +25,7 @@ const EmployeeTopicsPage = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/get_topics.php?user_id=${currentUserId}`,
+        `${API_URL}/get_topics.php?user_id=${currentUserId}`,
       );
       const result = await res.json();
 
@@ -46,7 +45,7 @@ const EmployeeTopicsPage = () => {
     } catch (error) {
       console.error("Fetch error:", error);
     }
-  }, [currentUserId]);
+  }, [currentUserId, API_URL]);
 
   useEffect((): void => {
     fetchTopics();
@@ -60,14 +59,11 @@ const EmployeeTopicsPage = () => {
     if (!currentUserId) return;
 
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/toggle_save.php`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic_id: id, user_id: currentUserId }),
-        },
-      );
+      const res = await fetch(`${API_URL}/toggle_save.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic_id: id, user_id: currentUserId }),
+      });
 
       if ((await res.json()).success) {
         setData((prev) =>
@@ -91,10 +87,13 @@ const EmployeeTopicsPage = () => {
 
   const handleRowClick = async (topic: IEmployeeTopic): Promise<void> => {
     setViewTopic(topic);
-    if (!currentUserId || topic.status !== "New") return;
+    const shouldIncrement =
+      topic.status === "New" || topic.status === "Updated";
+
+    if (!currentUserId || !shouldIncrement) return;
 
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/increment_views.php`, {
+      await fetch(`${API_URL}/increment_views.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: topic.id, user_id: currentUserId }),
