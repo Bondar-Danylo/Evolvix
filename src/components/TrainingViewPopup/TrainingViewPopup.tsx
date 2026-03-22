@@ -112,32 +112,6 @@ const TrainingViewPopup = ({
         </div>
 
         <div className={styles.body}>
-          {isSubmitted &&
-            !isAlreadyPassed &&
-            currentPercent < passThreshold && (
-              <div className={`${styles.resultBanner} ${styles.fail}`}>
-                <div className={styles.bannerText}>
-                  <h4>
-                    📉 Not enough points ({Math.round(currentPercent * 100)}%)
-                  </h4>
-                  <p>
-                    You need at least 80% to pass. Please review your mistakes
-                    and try again.
-                  </p>
-                </div>
-              </div>
-            )}
-
-          {isAlreadyPassed && (
-            <div className={`${styles.resultBanner} ${styles.pass}`}>
-              <div className={styles.bannerText}>
-                <h4>🎉 Well done!</h4>
-                <p>You have successfully passed the knowledge check.</p>
-              </div>
-              <span className={styles.statusBadge}>PASSED</span>
-            </div>
-          )}
-
           {training.image_url && (
             <div className={styles.imageWrapper}>
               <img
@@ -228,6 +202,32 @@ const TrainingViewPopup = ({
                 )}
               </div>
             </section>
+          )}
+
+          {isSubmitted &&
+            !isAlreadyPassed &&
+            currentPercent < passThreshold && (
+              <div className={`${styles.resultBanner} ${styles.fail}`}>
+                <div className={styles.bannerText}>
+                  <h4>
+                    📉 Not enough points ({Math.round(currentPercent * 100)}%)
+                  </h4>
+                  <p>
+                    You need at least 80% to pass. Please review your mistakes
+                    and try again.
+                  </p>
+                </div>
+              </div>
+            )}
+
+          {isAlreadyPassed && (
+            <div className={`${styles.resultBanner} ${styles.pass}`}>
+              <div className={styles.bannerText}>
+                <h4>🎉 Well done!</h4>
+                <p>You have successfully passed the knowledge check.</p>
+              </div>
+              <span className={styles.statusBadge}>PASSED</span>
+            </div>
           )}
         </div>
       </div>

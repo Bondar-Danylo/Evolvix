@@ -22,8 +22,8 @@ const TrainingPage = () => {
     null,
   );
 
-  const dynamicDepartments: string[] = useMemo(() => {
-    const depts = trainings
+  const dynamicDepartments: string[] = useMemo((): Array<string> => {
+    const depts: string[] = trainings
       .map((t) => t.department)
       .filter((dept): dept is string => Boolean(dept && dept.trim() !== ""))
       .filter((dept) => dept.toLowerCase() !== "all");
@@ -45,7 +45,7 @@ const TrainingPage = () => {
     }
   };
 
-  useEffect(() => {
+  useEffect((): void => {
     fetchTrainings();
   }, []);
 
@@ -61,6 +61,11 @@ const TrainingPage = () => {
     } catch (error) {
       console.error("View error:", error);
     }
+  };
+
+  const handleCloseViewPopup = (): void => {
+    setSelectedTraining(null);
+    fetchTrainings();
   };
 
   const handleEdit = async (id: number): Promise<void> => {
@@ -100,22 +105,17 @@ const TrainingPage = () => {
   };
 
   const columns: IColumn<Trainings>[] = [
-    { header: "ID", key: "id" },
     { header: "Name", key: "name" },
     { header: "Department", key: "department" },
     {
       header: "Completed",
       key: "passed_users_count",
       render: (_, record) => {
-        const passed: number = Number(record.passed_users_count) || 0;
-        const total: number = Number(record.total_users_count) || 1;
-        const percentage: number = Math.round((passed / total) * 100);
+        const passed = Number(record.passed_users_count) || 0;
+        const total = Number(record.total_users_count) || 0;
+        const percentage = total > 0 ? Math.round((passed / total) * 100) : 0;
 
-        return (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <ProgressCircle value={percentage} size={30} />
-          </div>
-        );
+        return <ProgressCircle value={percentage} size={30} />;
       },
     },
     {
@@ -162,9 +162,10 @@ const TrainingPage = () => {
       {selectedTraining && (
         <TrainingViewPopup
           training={selectedTraining}
-          closePopup={() => setSelectedTraining(null)}
+          closePopup={handleCloseViewPopup}
         />
       )}
+
       {trainingToDelete && (
         <SmallPopup
           icon={attentionIcon}
