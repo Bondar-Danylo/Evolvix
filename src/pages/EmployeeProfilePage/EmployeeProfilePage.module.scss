@@ -5,6 +5,26 @@
     background-color: var(--white_color);
     box-shadow: var(--normal_shadow);
     border-radius: var(--normal_radius);
+    &__bar {
+        width: 100%;
+        height: 8px;
+        background: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden; // Чтобы заливка не выходила за края
+        margin-top: 8px;
+    }
+
+    &__fill {
+        height: 100%;
+        background: var(--dark-green_color); 
+        transition: width 0.5s ease-in-out;
+        border-radius: 100px;
+    }
+
+    &__footer {
+        margin-top: 15px;
+        font-weight: var(--medium_weight);    
+    }
     &__title {
         font-size: var(--subtitle_size);
         font-weight: var(--bold_weight);
@@ -28,19 +48,7 @@
         background-color: var(--grey_color);
         border-radius: var(--normal_radius);
         position: relative;
-        &::after {
-            position: absolute;
-            content: '';
-            height: 8px;
-            width: 83%;
-            left: 0;
-            background-color: var(--dark-green_color);
-            border-radius: var(--normal_radius);
-        }
-    }
-    &__footer {
-        margin-top: 15px;
-        font-weight: var(--medium_weight);
+
     }
 }
 .numbers {

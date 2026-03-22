@@ -124,6 +124,9 @@
     }
     .info {
         text-align: center;
+        &__status {
+            justify-content: center;
+        }
     }
     .summary {
         text-align: center;

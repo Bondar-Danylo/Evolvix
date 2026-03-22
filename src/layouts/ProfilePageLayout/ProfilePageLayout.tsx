@@ -1,14 +1,14 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import styles from "./ProfilePageLayout.module.scss";
 import userImg from "@/assets/user.png";
 import UploadIcon from "@/assets/upload_icon.svg?react";
 import checkedIcon from "@/assets/check_icon.svg";
+import attentionIcon from "@/assets/attention-triangle_icon.svg";
 import ContactInput from "@/components/ContactInput/ContactInput";
 import SmallPopup from "@/components/SmallPopup/SmallPopup";
-import attentionIcon from "@/assets/attention-triangle_icon.svg";
 import adIcon from "@/assets/ad_icon.svg";
-import padlockIcon from "@/assets/phone_icon.svg";
 import phoneIcon from "@/assets/padlock_icon.svg";
+import padlockIcon from "@/assets/phone_icon.svg";
 import type { IRole } from "@/components/Menu/IRole.types";
 import EmployeeProfilePage from "@/pages/EmployeeProfilePage/EmployeeProfilePage";
 import ProfilePage from "@/pages/ProfilePage/ProfilePage";
@@ -17,7 +17,6 @@ const ProfilePageLayout = ({ role }: IRole) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
-  // Состояние данных (то, что видит пользователь)
   const [userData, setUserData] = useState({
     name: "Loading...",
     position: "",
@@ -31,7 +30,6 @@ const ProfilePageLayout = ({ role }: IRole) => {
   const [originalData, setOriginalData] = useState<typeof userData | null>(
     null,
   );
-
   const [pendingUpdate, setPendingUpdate] = useState<{
     field: string;
     value: string;
@@ -40,6 +38,22 @@ const ProfilePageLayout = ({ role }: IRole) => {
 
   const userId: string | null = sessionStorage.getItem("userID");
   const API_URL: string = import.meta.env.VITE_API_URL;
+
+  const onboarding = useMemo(() => {
+    if (!userData.startDate || userData.startDate === "Not started") {
+      return { isCompleted: false, label: "Onboarding" };
+    }
+
+    const start: Date = new Date(userData.startDate);
+    const now: Date = new Date();
+
+    const diffTime: number = now.getTime() - start.getTime();
+    const diffDays: number = diffTime / (1000 * 60 * 60 * 24);
+
+    return diffDays > 7
+      ? { isCompleted: true, label: "Completed Onboarding" }
+      : { isCompleted: false, label: "Onboarding" };
+  }, [userData.startDate]);
 
   const fetchProfile = async (): Promise<void> => {
     if (!userId) return;
@@ -86,11 +100,10 @@ const ProfilePageLayout = ({ role }: IRole) => {
     try {
       const res = await fetch(`${API_URL}/upload_avatar.php`, {
         method: "POST",
-        body: formData, // Браузер сам выставит multipart/form-data
+        body: formData,
       });
       const result = await res.json();
       if (result.success) {
-        console.log("Avatar updated");
         setUserData((prev) => ({
           ...prev,
           avatar: `${API_URL}/${result.avatar_url}`,
@@ -107,11 +120,8 @@ const ProfilePageLayout = ({ role }: IRole) => {
     label: string,
   ): void => {
     if (!originalData) return;
-
     const isChanged = (originalData as any)[field] !== newValue;
-    const isNotStub = newValue !== "********";
-
-    if (isChanged && isNotStub && newValue.trim() !== "") {
+    if (isChanged && newValue !== "********" && newValue.trim() !== "") {
       setPendingUpdate({ field, value: newValue, label });
     } else if (newValue === "" || newValue === "********") {
       setUserData({ ...userData, [field]: (originalData as any)[field] });
@@ -120,7 +130,6 @@ const ProfilePageLayout = ({ role }: IRole) => {
 
   const confirmUpdate = async (): Promise<void> => {
     if (!pendingUpdate || !userId) return;
-
     try {
       const response = await fetch(`${API_URL}/update_user_profile.php`, {
         method: "POST",
@@ -134,8 +143,8 @@ const ProfilePageLayout = ({ role }: IRole) => {
       const result = await response.json();
       if (result.success) {
         setOriginalData({ ...userData });
-      } else {
-        if (originalData) setUserData(originalData);
+      } else if (originalData) {
+        setUserData(originalData);
       }
     } catch (error) {
       console.error("Update error:", error);
@@ -180,9 +189,17 @@ const ProfilePageLayout = ({ role }: IRole) => {
           <p className={styles.info__started}>
             Worked from {userData.startDate}
           </p>
+
           <div className={styles.info__status}>
-            <img src={checkedIcon} alt="Check" />
-            <span>Completed Onboarding</span>
+            <img
+              src={onboarding.isCompleted ? checkedIcon : attentionIcon}
+              alt="Status"
+            />
+            <span
+              style={{ color: onboarding.isCompleted ? "#27AE60" : "#F2994A" }}
+            >
+              {onboarding.label}
+            </span>
           </div>
         </div>
       </div>
@@ -218,7 +235,7 @@ const ProfilePageLayout = ({ role }: IRole) => {
           icon={attentionIcon}
           title={`Update ${pendingUpdate.label}`}
           subtitle={`Are you sure you want to change your ${pendingUpdate.label.toLowerCase()}?`}
-          text={`This change will be saved in your profile. You may need to use new credentials to log in.`}
+          text="You may need to use new credentials to log in."
           closePopup={cancelUpdate}
           onConfirm={confirmUpdate}
         />

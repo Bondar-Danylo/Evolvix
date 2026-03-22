@@ -2,7 +2,7 @@ export interface IInfoCardData {
     id: number,
     title: string,
 }
-interface InfoItem {
+export interface InfoItem {
     id: string | number;
     title: string;
     type?: "user" | "training" | "topic";
