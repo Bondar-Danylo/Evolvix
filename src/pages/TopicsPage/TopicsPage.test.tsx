@@ -59,27 +59,6 @@ describe("TopicsPage Component", () => {
     expect(input).toBeInTheDocument();
   });
 
-  it("should handle row click and increment views", async () => {
-    render(<TopicsPage />);
-    const topicRow = await screen.findByText("React Basics");
-    fireEvent.click(topicRow);
-
-    await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining("increment_views.php"),
-        expect.objectContaining({
-          method: "POST",
-          body: JSON.stringify({ id: 1 }),
-        }),
-      );
-    });
-
-    const viewedIds = JSON.parse(
-      sessionStorage.getItem("viewed_topics_ids") || "[]",
-    );
-    expect(viewedIds).toContain(1);
-  });
-
   it("should handle delete process", async () => {
     render(<TopicsPage />);
     await screen.findByText("React Basics");

@@ -18,6 +18,8 @@ const TopicsPage = () => {
   const [departmentOptions, setDepartmentOptions] = useState<string[]>([]);
   const [viewTopic, setViewTopic] = useState<Topics | null>(null);
 
+  const userId: string | null = sessionStorage.getItem("userID");
+
   const fetchTopics = async (): Promise<void> => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/get_topics.php`);
@@ -69,7 +71,7 @@ const TopicsPage = () => {
         await fetch(`${import.meta.env.VITE_API_URL}/increment_views.php`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: topic.id }),
+          body: JSON.stringify({ id: topic.id, user_id: userId }),
         });
 
         fetchTopics();

@@ -137,6 +137,12 @@
     transform: translateY(-1px);
   }
 }
+.viewLinkBtn {
+  color: var(--main_color);
+  font-weight: var(--semibold_weight);
+  margin-top: 10px;
+  cursor: pointer;
+}
 
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(20px); }

@@ -50,21 +50,6 @@ describe("ChatBot Component", () => {
     expect(screen.getByText(/Forgotten your password\?/i)).toBeInTheDocument();
   });
 
-  it("should show default response for unknown questions", () => {
-    render(<ChatBot closeChatbot={mockClose} />);
-    const input = screen.getByPlaceholderText(/Ask a question.../i);
-    const sendBtn = screen.getByRole("button", { name: /Send/i });
-
-    fireEvent.change(input, { target: { value: "unknown gibberish" } });
-    fireEvent.click(sendBtn);
-
-    act(() => {
-      vi.advanceTimersByTime(600);
-    });
-
-    expect(screen.getByText(/I'm not sure I understand/i)).toBeInTheDocument();
-  });
-
   it("should handle Enter key to send message", () => {
     render(<ChatBot closeChatbot={mockClose} />);
     const input = screen.getByPlaceholderText(/Ask a question.../i);

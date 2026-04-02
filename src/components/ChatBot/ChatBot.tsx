@@ -1,58 +1,82 @@
 import { useState, useEffect, useRef } from "react";
-import type { KeyboardEvent } from "react";
 import styles from "./ChatBot.module.scss";
 import { faqData } from "./faqData";
-import type { IMessage } from "./IMessage.types";
+import type { IChatBotMessage } from "./IMessage.types";
 import type { IChatBotProps } from "./IChatBotProps.types";
 import closeIcon from "@/assets/close_icon.svg";
+import TrainingViewPopup from "@/components/TrainingViewPopup/TrainingViewPopup";
+import TopicViewPopup from "@/components/TopicViewPopup/TopicViewPopup";
 
 const ChatBot = ({ closeChatbot }: IChatBotProps) => {
-  const [messages, setMessages] = useState<IMessage[]>([
+  const [messages, setMessages] = useState<IChatBotMessage[]>([
     { id: 1, sender: "Bot", text: "Hello! How can I help you today?" },
   ]);
   const [inputValue, setInputValue] = useState<string>("");
-  const windowRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [activeTraining, setActiveTraining] = useState<any>(null);
+  const [activeTopic, setActiveTopic] = useState<any>(null);
 
-  useEffect(() => {
+  const windowRef: React.RefObject<HTMLDivElement | null> =
+    useRef<HTMLDivElement>(null);
+
+  useEffect((): void => {
     if (windowRef.current) {
       windowRef.current.scrollTop = windowRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isLoading]);
 
-  const addMessage = (sender: "You" | "Bot", text: string): void => {
+  const addMessage = (
+    sender: "You" | "Bot",
+    text: string,
+    links?: any[],
+  ): void => {
     setMessages((prev) => [
       ...prev,
-      { id: Date.now() + Math.random(), sender, text },
+      { id: Date.now() + Math.random(), sender, text, links },
     ]);
   };
 
-  const getBotResponse = (input: string): void => {
+  const getBotResponse = async (input: string): Promise<void> => {
     const lowerInput = input.toLowerCase();
-    const foundItem = faqData.find((item) =>
-      item.keywords.some((keyword) => lowerInput.includes(keyword)),
+
+    const localMatch = faqData.find((item) =>
+      item.keywords.some((keyword) =>
+        lowerInput.includes(keyword.toLowerCase()),
+      ),
     );
 
-    const response = foundItem
-      ? foundItem.answer
-      : "I'm not sure I understand. Could you please rephrase your question?";
+    if (localMatch) {
+      addMessage("Bot", localMatch.answer);
+      return;
+    }
 
-    addMessage("Bot", response);
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/chat.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: input }),
+      });
+
+      if (!response.ok) throw new Error("Server error");
+
+      const data = await response.json();
+
+      addMessage("Bot", data.answer, data.metadata);
+    } catch (error) {
+      addMessage("Bot", "I'm having trouble connecting to the server.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSend = (): void => {
     const trimmedText = inputValue.trim();
-    if (!trimmedText) return;
+    if (!trimmedText || isLoading) return;
 
     addMessage("You", trimmedText);
     setInputValue("");
-
-    setTimeout(() => {
-      getBotResponse(trimmedText);
-    }, 600);
-  };
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") handleSend();
+    getBotResponse(trimmedText);
   };
 
   return (
@@ -73,25 +97,69 @@ const ChatBot = ({ closeChatbot }: IChatBotProps) => {
             >
               <div className={styles.bubble}>
                 <div className={styles.text}>{msg.text}</div>
+
+                {msg.links && msg.links.length > 0 && (
+                  <div className={styles.linksList}>
+                    {msg.links.map((link, index) => (
+                      <button
+                        key={index}
+                        className={styles.viewLinkBtn}
+                        onClick={() => {
+                          if (link.type === "training")
+                            setActiveTraining(link.data);
+                          if (link.type === "topic") setActiveTopic(link.data);
+                        }}
+                      >
+                        📖 View {link.type}: {link.data.name || link.data.title}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           ))}
+          {isLoading && (
+            <div className={`${styles.messageRow} ${styles.botRow}`}>
+              <div className={styles.bubble}>
+                <div className={styles.text}>Typing...</div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className={styles.footer}>
           <input
             type="text"
             className={styles.input}
-            placeholder="Ask a question..."
+            placeholder={isLoading ? "Processing..." : "Ask a question..."}
             value={inputValue}
+            disabled={isLoading}
             onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
+            onKeyDown={(e) => e.key === "Enter" && handleSend()}
           />
-          <button className={styles.sendBtn} onClick={handleSend}>
+          <button
+            className={styles.sendBtn}
+            onClick={handleSend}
+            disabled={isLoading || !inputValue.trim()}
+          >
             Send
           </button>
         </div>
       </div>
+
+      {activeTraining && (
+        <TrainingViewPopup
+          training={activeTraining}
+          closePopup={() => setActiveTraining(null)}
+        />
+      )}
+
+      {activeTopic && (
+        <TopicViewPopup
+          topic={activeTopic}
+          closePopup={() => setActiveTopic(null)}
+        />
+      )}
     </div>
   );
 };
