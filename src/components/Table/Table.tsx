@@ -31,7 +31,6 @@ export const Table = <T extends { id: string | number }>({
             key={record.id}
             className={focusedIndex === index ? styles.focused : ""}
             onMouseEnter={() => onRowMouseEnter?.(index)}
-            // ВЕШАЕМ КЛИК НА СТРОКУ
             onClick={() => onRowClick?.(record)}
             style={{ cursor: "pointer" }}
           >

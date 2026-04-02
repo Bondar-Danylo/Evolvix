@@ -16,11 +16,6 @@ export const useTableNavigation = (dataLength: number, onEnter?: (index: number)
           e.preventDefault();
           setFocusedIndex((prev) => (prev > 0 ? prev - 1 : dataLength - 1));
           break;
-        case "Enter":
-          if (focusedIndex !== -1) {
-            onEnter?.(focusedIndex);
-          }
-          break;
         case "Escape":
           setFocusedIndex(-1);
           break;

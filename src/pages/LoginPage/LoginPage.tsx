@@ -7,19 +7,19 @@ import VerticalLogo from "@/components/VerticalLogo/VerticalLogo";
 import Button from "@/components/Button/Button";
 import type { ILoginPage, ILoginPageProps } from "./ILoginPage.types";
 import { useNavigate, type NavigateFunction } from "react-router-dom";
-import { useState } from "react";
-import SmallPopup from "@/components/SmallPopup/SmallPopup";
-import attentionIcon from "@/assets/attention-triangle_icon.svg";
+// import { useState } from "react";
+// import SmallPopup from "@/components/SmallPopup/SmallPopup";
+// import attentionIcon from "@/assets/attention-triangle_icon.svg";
 
 const LoginPage = ({ setRole }: ILoginPageProps) => {
-  const [showPopup, setShowPopup] = useState<boolean>(false);
+  // const [showPopup, setShowPopup] = useState<boolean>(false);
 
   const navigate: NavigateFunction = useNavigate();
 
   const {
     register,
     handleSubmit,
-    getValues,
+    // getValues,
     formState: { errors },
   } = useForm<ILoginPage>();
 
@@ -53,45 +53,45 @@ const LoginPage = ({ setRole }: ILoginPageProps) => {
     }
   };
 
-  const handleResetPassword = async (): Promise<void> => {
-    const email = getValues("email");
+  // const handleResetPassword = async (): Promise<void> => {
+  //   const email = getValues("email");
 
-    if (!email || errors.email) {
-      alert("Please enter a valid email address first.");
-      setShowPopup(false);
-      return;
-    }
+  //   if (!email || errors.email) {
+  //     alert("Please enter a valid email address first.");
+  //     setShowPopup(false);
+  //     return;
+  //   }
 
-    try {
-      const response = await fetch(
-        "http://localhost/evolvix-api/reset-password.php",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        },
-      );
+  //   try {
+  //     const response = await fetch(
+  //       "http://evolvix.website/api/reset-password.php",
+  //       {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ email }),
+  //       },
+  //     );
 
-      const result = await response.json();
+  //     const result = await response.json();
 
-      if (result.success) {
-        alert("Success! Check your email for the new password.");
-        console.log("DEBUG: New Password is", result.newPassword);
-        alert(
-          `[DEBUG MODE]: Check console log for new password.\nNew password: ${result.newPassword}`,
-        );
+  //     if (result.success) {
+  //       alert("Success! Check your email for the new password.");
+  //       console.log("DEBUG: New Password is", result.newPassword);
+  //       alert(
+  //         `[DEBUG MODE]: Check console log for new password.\nNew password: ${result.newPassword}`,
+  //       );
 
-        setShowPopup(false);
-      } else {
-        alert(result.message);
-        setShowPopup(false);
-      }
-    } catch (error) {
-      console.error("Reset password error:", error);
-      alert("Connection error. Try again later.");
-      setShowPopup(false);
-    }
-  };
+  //       setShowPopup(false);
+  //     } else {
+  //       alert(result.message);
+  //       setShowPopup(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("Reset password error:", error);
+  //     alert("Connection error. Try again later.");
+  //     setShowPopup(false);
+  //   }
+  // };
 
   return (
     <main>
@@ -135,18 +135,10 @@ const LoginPage = ({ setRole }: ILoginPageProps) => {
             <Button type="submit" color="blue" size="large">
               LOGIN
             </Button>
-
-            <button
-              type="reset"
-              className={styles.buttons__reset}
-              onClick={(): void => setShowPopup(true)}
-            >
-              Forgot password?
-            </button>
           </div>
         </form>
       </div>
-      {showPopup && (
+      {/* {showPopup && (
         <SmallPopup
           icon={attentionIcon}
           title="Would you like to reset password?"
@@ -155,7 +147,7 @@ const LoginPage = ({ setRole }: ILoginPageProps) => {
           closePopup={(): void => setShowPopup(false)}
           onConfirm={handleResetPassword}
         />
-      )}
+      )} */}
     </main>
   );
 };
